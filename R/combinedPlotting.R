@@ -15,10 +15,22 @@
 #' @import ggplot2
 
 
-combinedPlotting <- (inputCSV,inputNWK) {
+fp <- "inst/extdata/"
+nwkFile <- read.tree(paste0(fp, "core_gene_tree.newick"))
+meta <- read.csv(paste0(fp, "ggplot-DB-5.csv"), header = TRUE,
+                 na.strings = c("","NA"), stringsAsFactors=FALSE)
 
+#tree <- ggtree(nwkFile, size = 0.05) %<+% meta  + geom_treescale(fontsize = 3, x=100, y=0)
+tree <- ggtree(nwkFile,layout ="circular", branch.length='none',size = 0.1) %<+% meta
+#tree <- tree + geom_treescale(x=20, y=10, width = 10, offset = 10,color = "red", fontsize = 1)
+tree <- tree + geom_tiplab(aes(angle =angle),color = 'blue', size=0.5, linesize=0.3) + theme_tree2()
+plot(tree)
+#tree <- ggtree(treeFile, layout = 'circular', size = 0.1) %<+% meta + geom_treescale(fontsize = 3, x=100, y=0)
+
+
+
+combinedPlotting <- (inputCSV, inputNWK) {
 }
-
 
 #' helper function of compare the elements of csv and nwk return a boolean value for matck or not
 #'
@@ -37,7 +49,7 @@ combinedPlotting <- (inputCSV,inputNWK) {
 #' @import phytools
 
 
-elementMatching <- function(inputCSV,inputNWK) {
+elementMatching <- function(inputCSV, inputNWK) {
 
   #check if the input format are correct
   #read inputs
@@ -55,12 +67,8 @@ elementMatching <- function(inputCSV,inputNWK) {
   # display
 
 
-
 }
 elementMatching(inputCSV = "insta/extdata/ref/test.csv",inputNWK = "insta/extdata/ref/test_file.nwk")
-
-
-
 
 
 
