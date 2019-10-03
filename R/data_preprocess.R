@@ -36,5 +36,5 @@ concatenate_fasta <- function(fileDirectory, outputName) {
 
 
 # concatenate_fasta(fileDirectory = "inst/extdata/VF", outputName = "inst/extdata/VF/test_output_1.fasta")
-
+# concatenate_fasta(fileDirectory = "inst/extdata/ref", outputName = "inst/extdata/ref/test_concate.fasta")
 # concatenate_fna(fileDirectory = "inst/extdata/refseq", outputName = "inst/extdata/refseq/test_output_2.fasta")
