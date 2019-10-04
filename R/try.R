@@ -8,13 +8,13 @@ library(phytools)
 library(phangorn)
 library(dplyr)
 
-
-# try
-temp_tree <- rtree(12)
-temp_data <- data.frame(Strain = letters[1:12],vf1 = runif(12,0,1), vf2 = runif(12,0,1))
-draw_tree <- ggtree(temp_tree,layout ="circular", branch.length='none',size = 0.1) %<+% temp_data
-draw_tree <- draw_tree + geom_tiplab(aes(angle =angle),color = 'blue', size=5, linesize=0.3) + theme_tree2()
-plot(draw_tree)
+#
+# # try
+# temp_tree <- rtree(12)
+# temp_data <- data.frame(Strain = letters[1:12],vf1 = runif(12,0,1), vf2 = runif(12,0,1))
+# draw_tree <- ggtree(temp_tree,layout ="circular", branch.length='none',size = 0.1) %<+% temp_data
+# draw_tree <- draw_tree + geom_tiplab(aes(angle =angle),color = 'blue', size=5, linesize=0.3) + theme_tree2()
+# plot(draw_tree)
 
 root <- setdiff(temp_tree$edge[,1],temp_tree$edge[,2])
 
@@ -26,7 +26,7 @@ tree <-(read.tree("sample1.newick"))
 
 mydata <- data.frame(Strain = letters[1:6],vf1 = runif(6,0,1), vf2 = runif(6,0,1))
 
-# try plotting now
+# try plotting using ggtree now
 tree0 <- ggtree(tree,layout ="circular", branch.length='none',size = 0.1) %<+% mydata
 tree0 <- tree0 + geom_tiplab(aes(angle =angle),color = 'blue', size=5, linesize=0.3) + theme_tree2()
 print(tree0$data)
@@ -66,7 +66,7 @@ colnames(df) <- 'depth'
 df$id <- c(1:(num_nodes + num_tips))
 df$parent <- parent
 
-# calculate angles of each nodes and tips
+# calculate angles of each nodes and tips add to dataframe
 df$angle <- -1
 next_list <- c()
 cur_list <-leaves
@@ -88,7 +88,7 @@ while(length(cur_list) > 1) {
   print(cur_list)
 }
 
-# add two empty columns of child1 and child2
+# add two columns of child1 and child2 store the childrens of the node
 df$c1 <- -1
 df$c2 <- -1
 print(df)
@@ -106,7 +106,7 @@ for(i in df$id) {
   }
 }
 
-# add two emply columns to store child_angle for ploting the arc
+# add two emply columns to store child_angle for each node
 df$c1_a <- -1
 df$c2_a <- -1
 for(i in df$id) {
@@ -116,13 +116,26 @@ for(i in df$id) {
     df$c1_a[i] = df$angle[c1]
     df$c2_a[i] = df$angle[c2]
   }
-
 }
 
-print(df)
+print(df) # example result below
+# depth id parent   angle c1 c2 c1_a   c2_a
+# 1      1  1      7  60.000 -1 -1   -1  -1.00
+# 2      5  2     11 120.000 -1 -1   -1  -1.00
+# 3      5  3     11 180.000 -1 -1   -1  -1.00
+# 4      4  4     10 240.000 -1 -1   -1  -1.00
+# 5      3  5      9 300.000 -1 -1   -1  -1.00
+# 6      2  6      8 360.000 -1 -1   -1  -1.00
+# 7      0  7     NA 181.875  1  8   60 303.75
+# 8      1  8      7 303.750  6  9  360 247.50
+# 9      2  9      8 247.500  5 10  300 195.00
+# 10     3 10      9 195.000  4 11  240 150.00
+# 11     4 11     10 150.000  2  3  120 180.00
+
+
+
 
 # https://stackoverflow.com/questions/6862742/draw-a-circle-with-ggplot2
-
 circleFun <- function(center = c(0,0), diameter = 10, npoints = 100){
   r = diameter / 2
   # seq function is used to generate a sequence of number with a distance of "by"
