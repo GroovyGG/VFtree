@@ -60,24 +60,17 @@ num_edges = nrow(tree$edge)
 # Calculate the unit_length of radiote_plot
 
 # Create a data frame of nodes
+# The data frame should having titles like: depth id parent angle c1 c2 c1_angle c2_angle
 df <- as.data.frame(depth)
 colnames(df) <- 'depth'
 df$id <- c(1:(num_nodes + num_tips))
 df$parent <- parent
+
+# calculate angles of each nodes and tips
 df$angle <- -1
-print(df)
-
-
-for( i in leaves){
-  df$angle[i] = (360/num_tips) * i
-}
-
-
-
 next_list <- c()
 cur_list <-leaves
 while(length(cur_list) > 1) {
-
   next_list <- c()
   for( i in cur_list){
     if(i %in% leaves) {
@@ -95,8 +88,30 @@ while(length(cur_list) > 1) {
   print(cur_list)
 }
 
+# add two empty columns of child1 and child2
+df$c1 <- -1
+df$c2 <- -1
+print(df)
+for(i in df$id) {
+  for( j in df$id) {
+    # make sure to skip the root with is.na
+    if( !is.na(df$parent[i]) && df$id[j] == df$parent[i] ) {
+      if(df$c1[j] == -1){
+        # assign first child to parent
+        df$c1[j] <- i
+      }else{
+        df$c2[j] <- i
+        }
+    }
+  }
+}
+
+# add two emply columns to store child_angle for ploting the arc
+df$c1_a <- -1
+df$c2_a <- -1
 
 
+print(df)
 
 # https://stackoverflow.com/questions/6862742/draw-a-circle-with-ggplot2
 
