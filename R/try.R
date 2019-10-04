@@ -109,7 +109,15 @@ for(i in df$id) {
 # add two emply columns to store child_angle for ploting the arc
 df$c1_a <- -1
 df$c2_a <- -1
+for(i in df$id) {
+  if(df$c1[i] != -1){
+    c1 <- df$c1[i]
+    c2 <- df$c2[i]
+    df$c1_a[i] = df$angle[c1]
+    df$c2_a[i] = df$angle[c2]
+  }
 
+}
 
 print(df)
 
