@@ -177,6 +177,10 @@ getCoordinates <- function (data1, data2) {
       data1$y[i] <- sub$y[index]
     }
   }
+  root_data <- filter(data1, data1$depth == 0)
+  root <- root_data$id[1]
+  data1$x[root] <- 0
+  data1$y[root] <- 0
   print(data1)
   return(data1)
 }
@@ -195,11 +199,23 @@ nodeGroup <- function(data1, data2, idx, plot_arg, tip = FALSE) {
   st_x <- data1$x[idx]
   st_y <- data1$y[idx]
   # parent depth = self depth - depth length
-  p_depth <- data1$depth[i] - data1$depth_length[i]
+
+  if(tip == FALSE) {
+    p_depth <- data1$depth[idx] - data1$depth_length[idx]
+  }else{
+    max_d = max(data1$depth)
+    p_depth <- max_depth - data1$depth_length[idx]
+  }
+
+  print(p_depth)
+  print(data1$depth[idx])
+  print(data1$depth_length[idx])
+
   # calculate end point x and y
   filtered <- filter(data2, data2$layer_id == p_depth)
+  print(filtered)
   index <- data1$angle[idx]/360 * num_p
-
+  print(index)
   if(data1$depth[idx] == 1){
     ep_x <- 0
     ep_y <- 0
@@ -217,6 +233,7 @@ nodeGroup <- function(data1, data2, idx, plot_arg, tip = FALSE) {
   if(tip == FALSE) {
     c1_index <- df$c1_a[idx]/360 * num_p
     c2_index <- df$c2_a[idx]/360 * num_p
+    print("tip == false")
 
     node_df <- filter(data2 ,data2$layer_id == df$depth[idx])
     # plot the arc along the internal node
@@ -229,6 +246,8 @@ nodeGroup <- function(data1, data2, idx, plot_arg, tip = FALSE) {
 
 treePlot <- function(xy_data, layer_data) {
 
+  root_data <- filter(data1, data1$depth == 0)
+  root <- root_data$id[1]
   # initiate a ggplot object here
   #remove roots here by filtered the tree df
   node_df <- filter(xy_data,xy_data$id != root)
@@ -237,16 +256,36 @@ treePlot <- function(xy_data, layer_data) {
   # plot <- plot + ggplot2::geom_point(aes(x = 0, y = 0), colour = "blue") + geom_point(data = filter(df,df$c1 == -1), colour = "red")
   # plot <- plot + geom_point(data = filter(filtered_df, filtered_df$c1 != -1 ), colour = "green")
 
+
   for (i in node_df$id){
     result_plot <- nodeGroup(data1 = xy_data, data2 = layer_data, idx = i, plot_arg = result_plot, tip = (i < root))
   }
   return(result_plot)
 }
 
-
+root = 7
 df <- input_process(inputname = "sample1.newick")
 layers <- getLayers(data = df, refine_factor = 100)
-
 xy_df <- getCoordinates(data1 = df, data2 = layers)
-final_plot <- treePlot(xy_data = xy_df, layer_data = layers)
+
+node_df <- filter(xy_df,xy_df$id != root)
+base_plot <- ggplot2::ggplot(xy_df,aes(x, y )) + ggplot2::coord_fixed(ratio = 1)
+result_plot <- base_plot + ggplot2::geom_point(aes(x = 0, y = 0), colour = "blue") + geom_point(data = node_df, colour = "red")
+
+ result_plot <- nodeGroup(data1 = xy_df, data2 = layers, idx = 1, plot_arg = result_plot, tip = TRUE)
+ result_plot <- nodeGroup(data1 = xy_df, data2 = layers, idx = 2, plot_arg = result_plot, tip = TRUE)
+ result_plot <- nodeGroup(data1 = xy_df, data2 = layers, idx = 3, plot_arg = result_plot, tip = TRUE)
+
+result_plot <- nodeGroup(data1 = xy_df, data2 = layers, idx = 4, plot_arg = result_plot, tip = TRUE) # wrong!
+
+result_plot <- nodeGroup(data1 = xy_df, data2 = layers, idx = 5, plot_arg = result_plot, tip = TRUE) # wrong!
+result_plot <- nodeGroup(data1 = xy_df, data2 = layers, idx = 6, plot_arg = result_plot, tip = TRUE) # wrong!
+
+result_plot <- nodeGroup(data1 = xy_df, data2 = layers, idx = 8, plot_arg = result_plot, tip = FALSE)
+result_plot <- nodeGroup(data1 = xy_df, data2 = layers, idx = 9, plot_arg = result_plot, tip = FALSE)
+result_plot <- nodeGroup(data1 = xy_df, data2 = layers, idx = 10, plot_arg = result_plot, tip = FALSE)
+result_plot <- nodeGroup(data1 = xy_df, data2 = layers, idx = 11, plot_arg = result_plot, tip = FALSE)
+
+#final_plot <- treePlot(xy_data = xy_df, layer_data = layers)
+
 final_plot
