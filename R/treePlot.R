@@ -142,12 +142,13 @@ getNPoints <- function (data,refine_factor = 100){
 #np is the number of points
 getLayers <- function (data, npoint) {
 
-  # n is the max_depth
-  max_d <- max(data$depth)
+  max_d <- max(data$depth) # n is the max_depth
   unit_r <- 1
   num_tips <- (nrow(data) + 1 )/2
+
   # generate x and y coordinate based on layers and tree_fd
   layers <- data.frame()
+
   #initiate a empty vector to store layers of data frame of circular plotting data
   for(i in c(1:max_d)){
     # The outer layer just need the tips/points the npoints
@@ -156,7 +157,7 @@ getLayers <- function (data, npoint) {
 
       # layer_id == depth of the ring means this is the outer layer of the tree for tips
       outer$layer_id <- max_d
-      layers <- rbind(layers, outer)
+      layers <- rbind(layers, outer) #rbind is used to row bind more data frame into one
     }else{
       inner_r <- (max_d - i + 1)
       inner <- circleFun(center = center_point, r = inner_r, npoints = npoint)
@@ -244,12 +245,11 @@ nodeGroup <- function(data1, data2, idx, plot_arg, npoint, tip = FALSE) {
 
     node_df <- filter(data2 ,data2$layer_id == df$depth[idx])
     # plot the arc along the internal node
-    plot_res <- plot_res + geom_path(data = node_df[c(c1_index:c2_index),])
+    plot_res <- plot_res + geom_path(data = node_df[c(c1_index:c2_index),],aes(colour = "segment"))
   }
 
   return(plot_res)
 }
-
 
 treePlot <- function(xy_data, layer_data, npoint) {
 
@@ -260,9 +260,10 @@ treePlot <- function(xy_data, layer_data, npoint) {
   no_root_data <- filter(xy_data, xy_data$id != root)
   print(no_root_data)
   # initiate a ggplot object here
-  #remove roots here by filtered the tree df
+  # remove roots here by filtered the tree df
+  # https://felixfan.github.io/ggplot2-remove-grid-background-margin/
   node_df <- filter(xy_data,xy_data$id != root)
-  base_plot <- ggplot2::ggplot(xy_data,aes(x, y )) + ggplot2::coord_fixed(ratio = 1)
+  base_plot <- ggplot2::ggplot(xy_data,aes(x, y )) + ggplot2::coord_fixed(ratio = 1) + theme_bw() + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
   result_plot <- base_plot + ggplot2::geom_point(aes(x = 0, y = 0), colour = "blue") + geom_point(data = node_df, colour = "red", size = 0.3)
 
   # plot <- plot + ggplot2::geom_point(aes(x = 0, y = 0), colour = "blue") + geom_point(data = filter(df,df$c1 == -1), colour = "red")
@@ -281,33 +282,110 @@ treePlot <- function(xy_data, layer_data, npoint) {
 
 ###########################
 # 6. process csv info
-
-# temp_data <- data.frame(id = c(1:100),vf1 = runif(100,0,1), vf2 = runif(100,0,1))
-# write.csv(temp_data,file = "table100.csv")
-tableProcess <- function(inputname){
-  table <- read.csv(inputname)
+tableProcess <- function(input_name){
+  table <- read.csv(input_name)
   return(table)
 }
-
-
-
+# temp_data <- data.frame(id = c(1:100),vf1 = runif(100,0,1), vf2 = runif(100,0,1))
+# write.csv(temp_data,file = "table100.csv")
 
 ###########################
-# 7. ring unit function for draw a single unit on the ring
+# 7. generate ring radius based on ring numbers
+getRingRadius <- function(ring_table_data, distance_between_tree_and_ring = 1, distance_between_ring_and_ring = 1, tree_outer_raduis) {
+  list_of_factors <- colnames(table_for_ring)
+  radius_factors_df <-as.data.frame(list_of_factors)
+  colnames(radius_factors_df) <- 'factor'
+  radius_factors_df <- filter(radius_factors_df, radius_factors_df$factor != "X")
+  radius_factors_df <- filter(radius_factors_df, radius_factors_df$factor != "id")
+  #create a new column named ring_radius for radius info
+  radius_factors_df$ring_radius <- 0
+  radius_factors_df$ring_radius[1] <-tree_outer_raduis + distance_between_tree_and_ring
+  num_rings <- nrow(radius_factors_df)
+  for(i in c(2:num_rings)) {
+    radius_factors_df$ring_radius[i] <- radius_factors_df$ring_radius[i-1] + distance_between_ring_and_ring
+  }
+  return(radius_factors_df)
+}
 
-
-ringUnit <- function(inner,width = 0.5, degree, order) {
-
+###########################
+# 8. ring unit function for draw a single unit on the ring
+getRingData <- function(center_point = c(0,0), table_data, tree_depth, ring_radius, refine_factor_for_ring = 20) {
+  table_length <- nrow(table_data)
+  ring_radius
+  ring_data_point <- circleFun(center = center_point, r = ring_radius , npoints = table_length)
+  return(ring_data_point)
 }
 
 
+ringPlot <- function(ring_table_data, radius_data, tree_max_depth, refine_factor = 20, present_rate = 0.5, tree_plot){
+
+  ring_table_data[,c(3:ncol(ring_table_data))] <- floor(ring_table_data[,c(3:ncol(ring_table_data))] + present_rate)
+  ring_plot <- tree_plot
+  for(i in col_factors[c(3:length(col_factors))]){
+    temp_data = getRingData(table_data = ring_table_data, tree_depth = tree_max_depth, ring_radius = radius_data[i])
+    temp_data[,i] <- ring_table_data[,i]
+    ring_plot <- ring_plot + geom_point(data = filter(temp_data,temp_data[,i] == 1),aes(x = x,y = y,colour = "red"))
+  }
+  return(ring_plot)
+}
 
 
-df <- input_process(inputname = "sample150.newick")
+# function calls start here
+df <- input_process(inputname = "sample100.newick")
 refine_f = 40
 p <- getNPoints(data = df,refine_factor = refine_f)
 layers <- getLayers(data = df, npoint =  p)
 xy_df <- getCoordinates(data1 = df, data2 = layers, npoint = p)
-final_plot <- NULL
-final_plot <- treePlot(xy_data = xy_df, layer_data = layers, npoint = p)
-final_plot
+final_tree_plot <- NULL
+final_tree_plot <- treePlot(xy_data = xy_df, layer_data = layers, npoint = p)
+center_point <- c(0,0)
+
+table_for_ring <- tableProcess(input_name = "table100.csv")
+max_d_of_tree <- max(df$depth)
+
+table_ring_radius <- getRingRadius(ring_table_data = table_for_ring, tree_outer_raduis = max_d_of_tree)
+table_length <- nrow(table_for_ring)
+
+r_data <- structure(as.vector(table_ring_radius$ring_radius), names=as.vector(table_ring_radius$factor))
+ring_plot <- ringPlot(ring_table_data = table_for_ring, radius_data = r_data, tree_max_depth = max_d_of_tree, tree_plot = final_tree_plot )
+
+
+
+
+
+
+
+
+
+
+ring_data_point_1$vf1 <- table_for_ring$vf1
+for( i in c(1:nrow(ring_data_point_1))){
+  if(ring_data_point_1$vf1[i] < 0.5 ){
+    ring_data_point_1$vf1[i] <- 0
+  }else {
+    ring_data_point_1$vf1[i] <- 1
+  }
+}
+
+ring_data_point_2$vf2 <- table_for_ring$vf2
+for( i in c(1:nrow(ring_data_point_2))){
+  if(ring_data_point_2$vf2[i] < 0.5 ){
+    ring_data_point_2$vf2[i] <- 0
+  }else {
+    ring_data_point_2$vf2[i] <- 1
+  }
+}
+
+#ring_plot <- final_tree_plot + geom_path(data = ring1)
+ring_plot <- final_tree_plot + geom_point(data = filter(ring_data_point_1,ring_data_point_1$vf1 == 1),aes(x = x,y = y,colour = "red"))
+ring_plot <- ring_plot + geom_point(data = filter(ring_data_point_2,ring_data_point_2$vf2 == 1),aes(x = x,y = y,colour = "blue"))
+
+# ggplot(data, aes(period, freq, size=copies, color=total_len)) +
+#   geom_point() +
+#   scale_color_gradient(low="blue", high="red")
+
+ring_data$unit <- -1
+total_ring_index <- table_length * refine_factor_for_ring
+
+# ring_plot <- final_tree_plot + geom_path(data = ring1)
+
