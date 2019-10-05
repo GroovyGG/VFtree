@@ -171,14 +171,14 @@ getCoordinates <- function (data1, data2) {
       data1$x[i] <- sub$x[i]
       data1$y[i] <- sub$y[i]
     }else {  # for all internal nods
-      sub <- filter(data2,data2$layer_id == data2$depth[i])
-      index <- data$angle[i]/360 * num_p
+      sub <- filter(data2,data2$layer_id == data1$depth[i])
+      index <- data1$angle[i]/360 * num_p
       data1$x[i] <- sub$x[index]
       data1$y[i] <- sub$y[index]
     }
   }
-  print(df)
-  return(df)
+  print(data1)
+  return(data1)
 }
 
 
@@ -191,18 +191,15 @@ getCoordinates <- function (data1, data2) {
 
 nodeGroup <- function(data1, data2, idx, plot_arg, tip = FALSE) {
   # Vertical line / radiate line connect its parent to itself: require depth_length column and angle
-  # data1 <- df
-  # data2 <- layers
-  # i = 8
   # calculate start point x and y
   st_x <- data1$x[idx]
   st_y <- data1$y[idx]
-
+  # parent depth = self depth - depth length
   p_depth <- data1$depth[i] - data1$depth_length[i]
-
   # calculate end point x and y
   filtered <- filter(data2, data2$layer_id == p_depth)
   index <- data1$angle[idx]/360 * num_p
+
   if(data1$depth[idx] == 1){
     ep_x <- 0
     ep_y <- 0
@@ -213,6 +210,7 @@ nodeGroup <- function(data1, data2, idx, plot_arg, tip = FALSE) {
 
   # construct a df with start point and end point coordinates
   node_data <- data.frame(st_x, st_y, ep_x, ep_y)
+  print(node_data)
   plot_res <- plot_arg + geom_segment(aes(x = st_x, y = st_y, xend = ep_x , yend = ep_y, colour = "segment"), data = node_data)
 
   # Horizontal/arc line connect two support child point require c1_a and c2_a and depth/radius
@@ -229,21 +227,20 @@ nodeGroup <- function(data1, data2, idx, plot_arg, tip = FALSE) {
 }
 
 
-
-treePlot <- function(data1, data2) {
+treePlot <- function(xy_data, layer_data) {
 
   # initiate a ggplot object here
   #remove roots here by filtered the tree df
-  node_df <- filter(df,df$id != root)
-  plot <- ggplot2::ggplot(df,aes(x, y )) + ggplot2::coord_fixed(ratio = 1)
-  plot <- plot + ggplot2::geom_point(aes(x = 0, y = 0), colour = "blue") + geom_point(data = node_df, colour = "red")
+  node_df <- filter(xy_data,xy_data$id != root)
+  base_plot <- ggplot2::ggplot(xy_data,aes(x, y )) + ggplot2::coord_fixed(ratio = 1)
+  result_plot <- base_plot + ggplot2::geom_point(aes(x = 0, y = 0), colour = "blue") + geom_point(data = node_df, colour = "red")
   # plot <- plot + ggplot2::geom_point(aes(x = 0, y = 0), colour = "blue") + geom_point(data = filter(df,df$c1 == -1), colour = "red")
   # plot <- plot + geom_point(data = filter(filtered_df, filtered_df$c1 != -1 ), colour = "green")
 
   for (i in node_df$id){
-    plot <- nodeGroup(data1 = df, data2 = layers, idx = i, plot_arg = plot, tip = (i < root))
+    result_plot <- nodeGroup(data1 = xy_data, data2 = layer_data, idx = i, plot_arg = result_plot, tip = (i < root))
   }
-  return(plot)
+  return(result_plot)
 }
 
 
@@ -251,5 +248,5 @@ df <- input_process(inputname = "sample1.newick")
 layers <- getLayers(data = df, refine_factor = 100)
 
 xy_df <- getCoordinates(data1 = df, data2 = layers)
-
-plot <- treePlot(data1 = xy_df, data2 = layers)
+final_plot <- treePlot(xy_data = xy_df, layer_data = layers)
+final_plot
