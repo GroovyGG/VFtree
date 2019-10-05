@@ -119,7 +119,7 @@ circleFun <- function(center = c(0,0), r = 10, npoints = 100){
   return(data.frame(x = xx, y = yy))
 }
 
-try <- circleFun(center = center_point, r = 20, npoints = num_tips + 1)
+#try <- circleFun(center = center_point, r = 20, npoints = num_tips + 1)
 
 ###########################
 # 4. Start Plotting using ggplot
@@ -136,18 +136,18 @@ getCoordinates <- function (df, refine_factor = 100) {
   num_p <- num_tips * refine_factor  # num_p is the number of points of each layer
   # generate x and y coordinate based on layers and tree_fd
   layers <- data.frame()
-  try2 <- circleFun(center = center_point, r = max_d, npoints = num_tips + 1)
-  try2
+
   #initiate a empty vector to store layers of data frame of circular plotting data
   for(i in c(1:max_d)){
     # The outer layer just need the tips/points the npoints
     if(i == 1) {
-      outer <- circleFun(center = center_point, r = max_d, npoints = num_tips)
+      outer <- circleFun(center = center_point, r = max_d, npoints = num_tips + 1)
       # layer_id == 1 means this is the outer layer of the tree for tips
       outer$layerid <- max_d
       layers <- rbind(layers, outer)
     }else{
-      inner <- circleFun(center = center_point, r = (df$depth[i] * unit_r), npoints = num_p)
+      inner_r <- (max_d - i + 1)
+      inner <- circleFun(center = center_point, r = inner_r, npoints = num_p)
       inner$layerid <- (max_d - i + 1)
       layers <- rbind(layers, inner)
     }
@@ -176,38 +176,45 @@ getCoordinates <- function (df, refine_factor = 100) {
 treePlot <- function(df) {
 
   # initiate a ggplot object here
-  plot <- ggplot(tree_tips, aes(x , y))
+  #remove roots here by filtered the tree df
+  node_df <- filter(df,df$id != root)
+  plot <- ggplot2::ggplot(df,aes(x, y )) + ggplot2::coord_fixed(ratio = 1)
+  plot <- plot + ggplot2::geom_point(aes(x = 0, y = 0), colour = "blue") + geom_point(data = node_df, colour = "red")
+  # plot <- plot + ggplot2::geom_point(aes(x = 0, y = 0), colour = "blue") + geom_point(data = filter(df,df$c1 == -1), colour = "red")
+  # plot <- plot + geom_point(data = filter(filtered_df, filtered_df$c1 != -1 ), colour = "green")
 
-  for (i in df$id){
-    if(i == root){
-
-      # plot the root as a single point in the center of the circle
-    }else{
-      if(i %in% leaves){ # plot the tips
-        nodeGroup(i)
-      }else{ # plot the node_group
-        tipGroup(i)
-      }
+  for (i in node_df$id){
+    if(i %in% leaves){ # plot the tips
+      nodeGroup(i)
+    }else{ # plot the node_group
+      tipGroup(i)
     }
+
   }
 }
 
-nodeGroup <- function(tree_df, i) {
-
-  # node itself
-  # node itself: require the angle of node and depth/radius
+nodeGroup <- function(df, layers, i, plot) {
 
 
   # Vertical line / radiate line connect its parent to itself
   # Vertical line: require depth_length column and angle
 
 
+
   # Horizontal/arc line connect two support child point
   # Vertical line require c1_a and c2_a and depth/radius
+  c1_index <- df$c1_a[i]/360 * num_p
+  c2_index <- df$c2_a[i]/360 * num_p
+
+  node_df <- filter(layers ,layers$layerid == df$depth[i])
+  # plot the arc along the internal node
+  plot <- plot + geom_path(data = node_df[c(c1_index:c2_index),])
+
+
 
 }
 
-tipGroup <- function(tree_df, i) {
+tipGroup <- function(df, i) {
 
   # node itself
 
