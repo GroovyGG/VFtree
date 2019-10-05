@@ -131,28 +131,34 @@ circleFun <- function(center = c(0,0), r = 10, npoints = 100){
 
 # This function is used to add x and y coordinate of all points(nodes + tips)
 
-getLayers <- function (data, refine_factor = 100) {
+getNPoints <- function (data,refine_factor = 100){
+  # num_p is the number of points of each layer
+  num_tips <- (nrow(data) + 1 )/2
+  num_p <- num_tips * refine_factor
+  return(num_p)
+}
+
+#np is the number of points
+getLayers <- function (data, npoint) {
 
   # n is the max_depth
-  # refine_factor <- 100
   max_d <- max(data$depth)
   unit_r <- 1
-
-  num_p <- num_tips * refine_factor  # num_p is the number of points of each layer
+  num_tips <- (nrow(data) + 1 )/2
   # generate x and y coordinate based on layers and tree_fd
   layers <- data.frame()
-
   #initiate a empty vector to store layers of data frame of circular plotting data
   for(i in c(1:max_d)){
     # The outer layer just need the tips/points the npoints
     if(i == 1) {
       outer <- circleFun(center = center_point, r = max_d, npoints = num_tips + 1)
+
       # layer_id == depth of the ring means this is the outer layer of the tree for tips
       outer$layer_id <- max_d
       layers <- rbind(layers, outer)
     }else{
       inner_r <- (max_d - i + 1)
-      inner <- circleFun(center = center_point, r = inner_r, npoints = num_p)
+      inner <- circleFun(center = center_point, r = inner_r, npoints = npoint)
       inner$layer_id <- (max_d - i + 1)
       layers <- rbind(layers, inner)
     }
@@ -161,18 +167,19 @@ getLayers <- function (data, refine_factor = 100) {
 
 }
 
-
-getCoordinates <- function (data1, data2) {
+#np is the number of points
+getCoordinates <- function (data1, data2, npoint) {
+  max_d  <- max(data2$layer_id)
   # "layers" is composed of n data_frame where n is the max depth of the tree
   for(i in data1$id){
 
-    if(i %in% leaves) { # for all tips
+    if(data1$c1[i] == -1) { # for all tips
       sub <-filter(data2,data2$layer_id == max_d)
       data1$x[i] <- sub$x[i]
       data1$y[i] <- sub$y[i]
     }else {  # for all internal nods
       sub <- filter(data2,data2$layer_id == data1$depth[i])
-      index <- data1$angle[i]/360 * num_p
+      index <- data1$angle[i]/360 * npoint
       data1$x[i] <- sub$x[index]
       data1$y[i] <- sub$y[index]
     }
@@ -193,7 +200,7 @@ getCoordinates <- function (data1, data2) {
 # data 1 is xy_df data
 # data 2 is layer data
 
-nodeGroup <- function(data1, data2, idx, plot_arg, tip = FALSE) {
+nodeGroup <- function(data1, data2, idx, plot_arg, npoint, tip = FALSE) {
   # Vertical line / radiate line connect its parent to itself: require depth_length column and angle
   # calculate start point x and y
   st_x <- data1$x[idx]
@@ -202,19 +209,25 @@ nodeGroup <- function(data1, data2, idx, plot_arg, tip = FALSE) {
 
   if(tip == FALSE) {
     p_depth <- data1$depth[idx] - data1$depth_length[idx]
+    # print("This is node and p_depth is:")
+    # print(p_depth)
+
   }else{
     max_d = max(data1$depth)
-    p_depth <- max_depth - data1$depth_length[idx]
+    print("max_d is:")
+    print(max_d)
+    p_depth <- max_d - data1$depth_length[idx]
+    # print("This is tip and p_depth is:")
+    # print(p_depth)
   }
-
-  print(p_depth)
-  print(data1$depth[idx])
-  print(data1$depth_length[idx])
+  print("idk is:")
+  print(idx)
 
   # calculate end point x and y
   filtered <- filter(data2, data2$layer_id == p_depth)
-  print(filtered)
-  index <- data1$angle[idx]/360 * num_p
+  # print(filtered)
+  index <- floor(data1$angle[idx]/360 * npoint) + 1
+  print("This is index:")
   print(index)
   if(data1$depth[idx] == 1){
     ep_x <- 0
@@ -226,13 +239,14 @@ nodeGroup <- function(data1, data2, idx, plot_arg, tip = FALSE) {
 
   # construct a df with start point and end point coordinates
   node_data <- data.frame(st_x, st_y, ep_x, ep_y)
+  print("this is node_data:")
   print(node_data)
   plot_res <- plot_arg + geom_segment(aes(x = st_x, y = st_y, xend = ep_x , yend = ep_y, colour = "segment"), data = node_data)
 
   # Horizontal/arc line connect two support child point require c1_a and c2_a and depth/radius
   if(tip == FALSE) {
-    c1_index <- df$c1_a[idx]/360 * num_p
-    c2_index <- df$c2_a[idx]/360 * num_p
+    c1_index <- df$c1_a[idx]/360 * npoint
+    c2_index <- df$c2_a[idx]/360 * npoint
     print("tip == false")
 
     node_df <- filter(data2 ,data2$layer_id == df$depth[idx])
@@ -244,10 +258,12 @@ nodeGroup <- function(data1, data2, idx, plot_arg, tip = FALSE) {
 }
 
 
-treePlot <- function(xy_data, layer_data) {
+treePlot <- function(xy_data, layer_data, npoint) {
 
-  root_data <- filter(data1, data1$depth == 0)
+  root_data <- filter(xy_data, xy_data$depth == 0)
   root <- root_data$id[1]
+  print("root is")
+  print(root)
   # initiate a ggplot object here
   #remove roots here by filtered the tree df
   node_df <- filter(xy_data,xy_data$id != root)
@@ -257,15 +273,25 @@ treePlot <- function(xy_data, layer_data) {
   # plot <- plot + geom_point(data = filter(filtered_df, filtered_df$c1 != -1 ), colour = "green")
 
   for (i in node_df$id){
-    result_plot <- nodeGroup(data1 = xy_data, data2 = layer_data, idx = i, plot_arg = result_plot, tip = (i < root))
+    result_plot <- nodeGroup(data1 = xy_data, data2 = layer_data, idx = i, plot_arg = result_plot,np = npoint, tip = (i < root))
+
   }
   return(result_plot)
 }
 
 
 df <- input_process(inputname = "sample.newick")
-layers <- getLayers(data = df, refine_factor = 100)
-xy_df <- getCoordinates(data1 = df, data2 = layers)
+refine_f = 100
+p <- getNPoints(data = df,refine_factor = refine_f)
+layers <- getLayers(data = df, npoint =  p)
+xy_df <- getCoordinates(data1 = df, data2 = layers, npoint = p)
+
+final_plot <- treePlot(xy_data = xy_df, layer_data = layers, npoint = p)
+
+
+final_plot
+
+root <- 26
 node_df <- filter(xy_df,xy_df$id != root)
 base_plot <- ggplot2::ggplot(xy_df,aes(x, y )) + ggplot2::coord_fixed(ratio = 1)
 result_plot <- base_plot + ggplot2::geom_point(aes(x = 0, y = 0), colour = "blue") + geom_point(data = node_df, colour = "red")
@@ -281,6 +307,3 @@ result_plot <- base_plot + ggplot2::geom_point(aes(x = 0, y = 0), colour = "blue
 # result_plot <- nodeGroup(data1 = xy_df, data2 = layers, idx = 10, plot_arg = result_plot, tip = FALSE)
 # result_plot <- nodeGroup(data1 = xy_df, data2 = layers, idx = 11, plot_arg = result_plot, tip = FALSE)
 
-final_plot <- treePlot(xy_data = xy_df, layer_data = layers)
-
-final_plot
