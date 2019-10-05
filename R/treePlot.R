@@ -11,19 +11,19 @@ library(phangorn)
 # require phytools and igraph
 # return data frame
 input_process <- function(inputname = "sample1.newick"){
-  tree <-(read.tree("sample1.newick"))
-  root <- setdiff(tree$edge[,1],tree$edge[,2]) # find Root from "phylo" object tree
+  tree <-(read.tree(inputname))
+  rt1 <- setdiff(tree$edge[,1],tree$edge[,2]) # find Root from "phylo" object tree
   leaves <- setdiff(tree$edge[,2],tree$edge[,1]) #find Leaves from "phylo" object tree
-
-  graph1 <- graph(t(tree$edge), n = 11, directed = TRUE) # construct graph from "phylo" object tree
-  max_depth <- max(bfs(graph1,root = 7, dist = TRUE)$dist) # find the max depth of the tree
-  bfs_result <- bfs(graph1,root = 7, father = TRUE, dist = TRUE) # find depth and parent using bfs
-  depth <- bfs_result$dist
-  parent <- as_ids(bfs_result$father)
 
   num_nodes = tree$Nnode # number of internal node tree$Nnode
   num_tips = tree$Nnode + 1 # number of tips tree$Node + 1
   num_edges = nrow(tree$edge) # number of edge also nrow(tree$edge) node + tips - 1
+
+  graph1 <- graph(t(tree$edge), n = num_nodes+num_tips, directed = TRUE) # construct graph from "phylo" object tree
+  max_depth <- max(bfs(graph1,root = rt1, dist = TRUE)$dist) # find the max depth of the tree
+  bfs_result <- bfs(graph1,root = rt1, father = TRUE, dist = TRUE) # find depth and parent using bfs
+  depth <- bfs_result$dist
+  parent <- as_ids(bfs_result$father)
 
   ###########################
   # 2.Construct the data frame of nodes
@@ -256,36 +256,31 @@ treePlot <- function(xy_data, layer_data) {
   # plot <- plot + ggplot2::geom_point(aes(x = 0, y = 0), colour = "blue") + geom_point(data = filter(df,df$c1 == -1), colour = "red")
   # plot <- plot + geom_point(data = filter(filtered_df, filtered_df$c1 != -1 ), colour = "green")
 
-
   for (i in node_df$id){
     result_plot <- nodeGroup(data1 = xy_data, data2 = layer_data, idx = i, plot_arg = result_plot, tip = (i < root))
   }
   return(result_plot)
 }
 
-root = 7
-df <- input_process(inputname = "sample1.newick")
+
+df <- input_process(inputname = "sample.newick")
 layers <- getLayers(data = df, refine_factor = 100)
 xy_df <- getCoordinates(data1 = df, data2 = layers)
-
 node_df <- filter(xy_df,xy_df$id != root)
 base_plot <- ggplot2::ggplot(xy_df,aes(x, y )) + ggplot2::coord_fixed(ratio = 1)
 result_plot <- base_plot + ggplot2::geom_point(aes(x = 0, y = 0), colour = "blue") + geom_point(data = node_df, colour = "red")
 
- result_plot <- nodeGroup(data1 = xy_df, data2 = layers, idx = 1, plot_arg = result_plot, tip = TRUE)
- result_plot <- nodeGroup(data1 = xy_df, data2 = layers, idx = 2, plot_arg = result_plot, tip = TRUE)
- result_plot <- nodeGroup(data1 = xy_df, data2 = layers, idx = 3, plot_arg = result_plot, tip = TRUE)
+# result_plot <- nodeGroup(data1 = xy_df, data2 = layers, idx = 1, plot_arg = result_plot, tip = TRUE)
+# result_plot <- nodeGroup(data1 = xy_df, data2 = layers, idx = 2, plot_arg = result_plot, tip = TRUE)
+# result_plot <- nodeGroup(data1 = xy_df, data2 = layers, idx = 3, plot_arg = result_plot, tip = TRUE)
+# result_plot <- nodeGroup(data1 = xy_df, data2 = layers, idx = 4, plot_arg = result_plot, tip = TRUE) # wrong!
+# result_plot <- nodeGroup(data1 = xy_df, data2 = layers, idx = 5, plot_arg = result_plot, tip = TRUE) # wrong!
+# result_plot <- nodeGroup(data1 = xy_df, data2 = layers, idx = 6, plot_arg = result_plot, tip = TRUE) # wrong!
+# result_plot <- nodeGroup(data1 = xy_df, data2 = layers, idx = 8, plot_arg = result_plot, tip = FALSE)
+# result_plot <- nodeGroup(data1 = xy_df, data2 = layers, idx = 9, plot_arg = result_plot, tip = FALSE)
+# result_plot <- nodeGroup(data1 = xy_df, data2 = layers, idx = 10, plot_arg = result_plot, tip = FALSE)
+# result_plot <- nodeGroup(data1 = xy_df, data2 = layers, idx = 11, plot_arg = result_plot, tip = FALSE)
 
-result_plot <- nodeGroup(data1 = xy_df, data2 = layers, idx = 4, plot_arg = result_plot, tip = TRUE) # wrong!
-
-result_plot <- nodeGroup(data1 = xy_df, data2 = layers, idx = 5, plot_arg = result_plot, tip = TRUE) # wrong!
-result_plot <- nodeGroup(data1 = xy_df, data2 = layers, idx = 6, plot_arg = result_plot, tip = TRUE) # wrong!
-
-result_plot <- nodeGroup(data1 = xy_df, data2 = layers, idx = 8, plot_arg = result_plot, tip = FALSE)
-result_plot <- nodeGroup(data1 = xy_df, data2 = layers, idx = 9, plot_arg = result_plot, tip = FALSE)
-result_plot <- nodeGroup(data1 = xy_df, data2 = layers, idx = 10, plot_arg = result_plot, tip = FALSE)
-result_plot <- nodeGroup(data1 = xy_df, data2 = layers, idx = 11, plot_arg = result_plot, tip = FALSE)
-
-#final_plot <- treePlot(xy_data = xy_df, layer_data = layers)
+final_plot <- treePlot(xy_data = xy_df, layer_data = layers)
 
 final_plot
