@@ -6,8 +6,8 @@
 \title{Table100}
 \format{A data frame with 100 rows and 4 columns:
 \describe{
-\item{X}{id1}
-\item{id}{id2}
+\item{X}{name reference of the strains}
+\item{id}{id of each strain}
 \item{vf1}{virulence factor 1 potential of the strain with id1/id2}
 \item{vf2}{virulence factor 2 potential of the strain with id1/id2}
 
@@ -17,6 +17,6 @@
 Table100
 }
 \description{
-A dataset contain 100 factor tree node info
+A dataset contain 2 factors and 100 tree nodes info
 }
 \keyword{datasets}

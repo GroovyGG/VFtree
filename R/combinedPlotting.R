@@ -44,12 +44,12 @@ source("R/ringPlot.R")
 #' @export
 
 combinedPlotting <- function(inputCSV, inputTree, inputNum) {
-  # inputCSV <- "table100.csv"
-  # inputTree <- "sample100.newick"
+  # inputCSV <- "inst/extdata/table100.csv"
+  # inputTree <- "inst/extdata/sample100.newick"
   tree_refine_f = 40
 
   df <- treeInputProcess(inputname = inputTree)
-  p <- getNPoints(data = df,ntips = inputNum, refine_factor = tree_refine_f)
+  p <- getNPoints(ntips = inputNum, refine_factor = tree_refine_f)
   tree_layers <- getLayers(data = df, npoint = p,ntips = inputNum)
   xy_df <- getCoordinates(tree = df, layers = tree_layers, npoint = p)
   final_tree_plot <- NULL

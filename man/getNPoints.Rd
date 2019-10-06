@@ -9,11 +9,9 @@ shaped data frame such as the rings and each circular layer of the tree
 
 The calculation here is based on num_tips is equal to}
 \usage{
-getNPoints(data, ntips, refine_factor = 100)
+getNPoints(ntips, refine_factor = 100)
 }
 \arguments{
-\item{data}{tree data frame which contains (tip_nodes + internal_nodes + root) numbers of rows}
-
 \item{ntips}{this is the input size of the strain/tree tips}
 
 \item{refine_factor}{factor of how many points plotted each circle}

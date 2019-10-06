@@ -76,6 +76,7 @@ getRingData <- function(center_point = c(0,0), table_data, tree_depth, ring_radi
   return(ring_data_point)
 }
 
+
 #' ringPlot
 #'
 #' This function is used to plot the rings of factoer present/absent of that

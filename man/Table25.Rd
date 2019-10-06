@@ -6,9 +6,10 @@
 \title{Table25}
 \format{A data frame with 25 rows and 4 columns:
 \describe{
-\item{X}{id1}
-\item{id}{id2}
-\item{id}{id2}
+\item{X}{name reference of the strains}
+\item{id}{id of each strain}
+\item{vf1}{virulence factor 1 potential of the strain with id1/id2}
+\item{vf2}{virulence factor 2 potential of the strain with id1/id2}
 
 ...
 }}
@@ -16,6 +17,6 @@
 Table25
 }
 \description{
-A dataset contain 25 factor tree node info
+A dataset contain 2 factors and 25 tree nodes info
 }
 \keyword{datasets}

@@ -4,7 +4,7 @@
 \alias{treeInputProcess}
 \title{treeInputProcess}
 \usage{
-treeInputProcess(inputname = "sample100.newick")
+treeInputProcess(tree)
 }
 \arguments{
 \item{inputname}{the string of the location of the input tree}

@@ -27,9 +27,9 @@
 #' @import dplyr
 #' @import phytools
 
-treeInputProcess <- function(inputname = "sample100.newick"){
-  # inputname = "sample150.newick"
-  tree <-(ape::read.tree(inputname))
+treeInputProcess <- function(tree){
+  # inputname = "inst/extdata/sample150.newick"
+
   rt1 <- dplyr::setdiff(tree$edge[,1],tree$edge[,2]) # find Root from "phylo" object tree
   leaves <- dplyr::setdiff(tree$edge[,2],tree$edge[,1]) #find Leaves from "phylo" object tree
 
@@ -137,9 +137,6 @@ circleFun <- function(center = c(0,0), r = 10, npoints = 100){
   return(data.frame(x = xx, y = yy))
 }
 
-test <- circleFun(npoints = 5)
-try_plot <- ggplot(test,aes(x,y)) + geom_point()# geom_path()
-try_plot
 
 #' @title getNPoints
 #'
@@ -148,19 +145,19 @@ try_plot
 #'
 #' The calculation here is based on num_tips is equal to
 #'
-#' @param data tree data frame which contains (tip_nodes + internal_nodes + root) numbers of rows
 #' @param ntips this is the input size of the strain/tree tips
 #' @param refine_factor factor of how many points plotted each circle
 #' @return The total number of points of each circular shape data
 #'
 #' @examples
 #'
-getNPoints <- function (data, ntips, refine_factor = 100){
+getNPoints <- function (ntips, refine_factor = 100){
   # num_p is the number of points of each layer
-  num_p <- num_tips * refine_factor
+  num_p <- ntips * refine_factor
   #num_p <- num_tips * refine_factor + 1
   return(num_p)
 }
+
 
 #' getLayers
 #'
@@ -200,8 +197,8 @@ getLayers <- function (data, npoint, ntips, center = c(0,0), unit_r = 1) {
     }
   }
   return(layers)
-
 }
+
 
 #' getCoordinates
 #'
