@@ -24,22 +24,27 @@ test_that("circleFun works", {
 })
 
 test_that("getNPoints works", {
+
   expect_equal()
 })
 
 test_that("getLayers works", {
+
   expect_equal()
 })
 
 test_that("getCoordinates works", {
+
   expect_equal()
 })
 
 test_that("nodeGroup works", {
+
   expect_equal()
 })
 
 test_that("treePlot works", {
+
   expect_equal()
 })
 
