@@ -4,14 +4,18 @@
 \alias{getLayers}
 \title{getLayers}
 \usage{
-getLayers(data, npoint, center = c(0, 0))
+getLayers(data, npoint, ntips, center = c(0, 0), unit_r = 1)
 }
 \arguments{
 \item{data}{tree data frame without x,y coordinate function}
 
 \item{npoint}{the total number of points of each layer}
 
+\item{ntips}{this is the input size of the strain/tree tips}
+
 \item{center}{the center of the circle}
+
+\item{unit_r}{the radius difference between tree layers}
 }
 \value{
 num_p is the number of points of each layer

@@ -10,9 +10,9 @@ getRingRadius(ring_table_data, distance_between_tree_and_ring = 1,
 \arguments{
 \item{ring_table_data}{data frame containing all information about the input table/csv}
 
-\item{distance_between_tree_and_ring}{distance between the tree and the ring}
+\item{distance_between_tree_and_ring}{this is the unit distance/ radius difference between the tree and the first ring}
 
-\item{distance_between_ring_and_ring}{distance between ring and ring}
+\item{distance_between_ring_and_ring}{this is the unit distance/ radius difference between rings}
 
 \item{tree_outer_radius}{tree outer radius}
 }

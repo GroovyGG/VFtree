@@ -16,7 +16,7 @@ getRingData(center_point = c(0, 0), table_data, tree_depth, ring_radius,
 
 \item{ring_radius}{the radius}
 
-\item{refine_factor_for_ring}{refine factor of the plotting ring}
+\item{ring_refine_factor}{refine factor of the plotting ring}
 }
 \value{
 data frame containing x and y coordinate of one ring with npoint index

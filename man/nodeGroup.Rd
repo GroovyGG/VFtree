@@ -4,12 +4,12 @@
 \alias{nodeGroup}
 \title{nodeGroup}
 \usage{
-nodeGroup(data1, data2, idx, plot_arg, npoint, tip = FALSE)
+nodeGroup(tree, layers, idx, plot_arg, npoint, tip = FALSE)
 }
 \arguments{
-\item{data1}{tree data frame with updated x y coordinate information}
+\item{tree}{tree data frame with updated x y coordinate information}
 
-\item{data2}{layer data frame contaions all layers data}
+\item{layers}{layer data frame contaions all layers data}
 
 \item{idx}{the index of the point in tree data frame}
 

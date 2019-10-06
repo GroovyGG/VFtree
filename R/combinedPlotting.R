@@ -29,6 +29,7 @@ source("R/ringPlot.R")
 #' @param inputCSV input the generated csv file with pathogenic potential information
 #' of each virulence factor of each strain
 #' @param inputNWK input the generated nwk file of the taxonomic information between strains
+#' @param inputNum the number of input strains
 #' @return Combined the plotting of circular tree and factor ring from the
 #' data of tree(newick file) and table(csv/tsv file)
 #'
@@ -42,18 +43,17 @@ source("R/ringPlot.R")
 #'
 #' @export
 
-combinedPlotting <- function(inputCSV, inputTree) {
+combinedPlotting <- function(inputCSV, inputTree, inputNum) {
   # inputCSV <- "table100.csv"
   # inputTree <- "sample100.newick"
   tree_refine_f = 40
 
   df <- treeInputProcess(inputname = inputTree)
-  p <- getNPoints(data = df,refine_factor = tree_refine_f)
-  layers <- getLayers(data = df, npoint = p)
-  xy_df <- getCoordinates(data1 = df, data2 = layers, npoint = p)
-
+  p <- getNPoints(data = df,ntips = inputNum, refine_factor = tree_refine_f)
+  tree_layers <- getLayers(data = df, npoint = p,ntips = inputNum)
+  xy_df <- getCoordinates(tree = df, layers = tree_layers, npoint = p)
   final_tree_plot <- NULL
-  final_tree_plot <- treePlot(xy_data = xy_df, layer_data = layers, npoint = p)
+  final_tree_plot <- treePlot(xy_data = xy_df, layer_data = tree_layers, npoint = p)
 
   # table data process
   center_point <- c(0,0)
@@ -72,13 +72,13 @@ combinedPlotting <- function(inputCSV, inputTree) {
 # ############################### sample test cases
 
 # plot25 <- NULL
-# plot25 <- combinedPlotting("inst/extdata/table25.csv", "inst/extdata/sample25.newick")
+# plot25 <- combinedPlotting("inst/extdata/table25.csv", "inst/extdata/sample25.newick", inputNum = 25)
 # plot25
 # plot100 <- NULL
-# plot100 <- combinedPlotting("inst/extdata/table100.csv", "inst/extdata/sample100.newick")
+# plot100 <- combinedPlotting("inst/extdata/table100.csv", "inst/extdata/sample100.newick", inputNum = 100)
 # plot100
 # plot150 <- NULL
-# plot150 <- combinedPlotting("inst/extdata/table150.csv", "inst/extdata/sample150.newick")
+# plot150 <- combinedPlotting("inst/extdata/table150.csv", "inst/extdata/sample150.newick", inputNum = 150)
 # plot150
 
 # ############################### function calls start here

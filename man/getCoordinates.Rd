@@ -4,14 +4,14 @@
 \alias{getCoordinates}
 \title{getCoordinates}
 \usage{
-getCoordinates(data1, data2, npoint)
+getCoordinates(tree, layers, npoint)
 }
 \arguments{
-\item{data1}{tree data frame without x,y coordinate}
+\item{tree}{tree data frame without x,y coordinate}
 
-\item{data2}{layer data frame contaions all layers data}
+\item{layers}{layer data frame contaions all layers data}
 
-\item{npoint}{the number of points of each layer}
+\item{npoint}{the number of points xy coordinates data of each layer}
 }
 \value{
 updated tree data frame two new columns of x, y coordinates

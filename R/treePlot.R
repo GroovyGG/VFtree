@@ -116,42 +116,49 @@ treeInputProcess <- function(inputname = "sample100.newick"){
 #' This function is usend to collecting a data frame of points which together form
 #' a circle based on the diameter/radius and angle according to x-y axis
 #'
+#' the built in "pi" is not exactly equal to qi due to rounding,
+#  data of last point will almost covered by the first point with a y distance of "-2.449294e-15"
+#'
 #' @param center the center of the circle
-#' @param r the radius of the circle
+#' @param r radius of the circle
 #' @param npoints  a sequence of number with a distance of "by" by = ((to - from)/(length.out - 1)),
 #' @return data frame of points with their x, y coordinates information that form the circle
 #'
 #' @examples
 #'
 
-# modified based on source code https://stackoverflow.com/questions/6862742/draw-a-circle-with-ggplot2
+# this function is modified based on source code https://stackoverflow.com/questions/6862742/draw-a-circle-with-ggplot2
 circleFun <- function(center = c(0,0), r = 10, npoints = 100){
-  # seq function is used to generate a sequence of number with a distance of "by"
-  tt <- seq(0,2*pi,length.out = npoints)
+  # seq function: generate a sequence of number with a distance of "by"
+  evenly_divided <- seq(0,2*pi,length.out = npoints)
   # get x and y coordinate of each point
-  xx <- center[1] + r * cos(tt)
-  yy <- center[2] + r * sin(tt)
+  xx <- center[1] + r * cos(evenly_divided)
+  yy <- center[2] + r * sin(evenly_divided)
   return(data.frame(x = xx, y = yy))
 }
 
-test1 <- circleFun( npoints = 10)
-
+test <- circleFun(npoints = 5)
+try_plot <- ggplot(test,aes(x,y)) + geom_point()# geom_path()
+try_plot
 
 #' @title getNPoints
 #'
 #' This function is used to caculate the number of points for each circular
-#' shaped data frame such as the rings and each layer of the tree
+#' shaped data frame such as the rings and each circular layer of the tree
 #'
-#' @param data tree data frame
+#' The calculation here is based on num_tips is equal to
+#'
+#' @param data tree data frame which contains (tip_nodes + internal_nodes + root) numbers of rows
+#' @param ntips this is the input size of the strain/tree tips
 #' @param refine_factor factor of how many points plotted each circle
 #' @return The total number of points of each circular shape data
 #'
 #' @examples
 #'
-getNPoints <- function (data,refine_factor = 100){
+getNPoints <- function (data, ntips, refine_factor = 100){
   # num_p is the number of points of each layer
-  num_tips <- (nrow(data) + 1 )/2
   num_p <- num_tips * refine_factor
+  #num_p <- num_tips * refine_factor + 1
   return(num_p)
 }
 
@@ -167,28 +174,27 @@ getNPoints <- function (data,refine_factor = 100){
 #'
 #' @param data tree data frame without x,y coordinate function
 #' @param npoint the total number of points of each layer
+#' @param ntips this is the input size of the strain/tree tips
 #' @param center the center of the circle
+#' @param unit_r the radius difference between tree layers
 #' @return num_p is the number of points of each layer
 #'
 #' @examples
 #'
-getLayers <- function (data, npoint, center = c(0,0)) {
+getLayers <- function (data, npoint, ntips, center = c(0,0), unit_r = 1) {
 
-  max_d <- max(data$depth) # n is the max_depth
-  unit_r <- 1
-  num_tips <- (nrow(data) + 1 )/2
+  max_d <- max(data$depth)
   layers <- data.frame()
-  #initiate a empty vector to store layers of data frame of circular plotting data
   for(i in c(1:max_d)){
     # The outer layer just need the tips/points the npoints
     if(i == 1) {
-      outer <- circleFun(center = center, r = max_d, npoints = num_tips + 1)
+      outer <- circleFun(center = center, r = max_d * unit_r, npoints = ntips + 1)
       # layer_id = max_depth means this is the outer layer of the tree for tips
       outer$layer_id <- max_d
       layers <- rbind(layers, outer) #rbind is used to row bind more data frame into one
     }else{
-      inner_r <- (max_d - i + 1)
-      inner <- circleFun(center = center, r = inner_r, npoints = npoint)
+      inner_r <- (max_d - i + 1)* unit_r
+      inner <- circleFun(center = center, r = inner_r, npoints = npoint + 1)
       inner$layer_id <- (max_d - i + 1)
       layers <- rbind(layers, inner)
     }
@@ -202,33 +208,34 @@ getLayers <- function (data, npoint, center = c(0,0)) {
 #' This function take input of the tree data and layer data, output the tree
 #' data frame with two more columns contain the x,y coordinate info of each node
 #'
-#' @param data1 tree data frame without x,y coordinate
-#' @param data2 layer data frame contaions all layers data
-#' @param npoint the number of points of each layer
+#' @param tree tree data frame without x,y coordinate
+#' @param layers layer data frame contaions all layers data
+#' @param npoint the number of points xy coordinates data of each layer
 #' @return updated tree data frame two new columns of x, y coordinates
 #'
 #' @examples
 #'
-getCoordinates <- function (data1, data2, npoint) {
-  max_d  <- max(data2$layer_id)
-  for(i in data1$id){
+getCoordinates <- function (tree, layers, npoint) {
+  max_d  <- max(layers$layer_id)
+  for(i in tree$id){
 
-    if(data1$c1[i] == -1) { # for all tips
-      sub <- dplyr::filter(data2,data2$layer_id == max_d)
-      data1$x[i] <- sub$x[i]
-      data1$y[i] <- sub$y[i]
+    if(tree$c1[i] == -1) { # for all tips
+      sub1 <- dplyr::filter(layers,layers$layer_id == max_d)
+      tree$x[i] <- sub1$x[i]
+      tree$y[i] <- sub1$y[i]
     }else {  # for all internal nods
-      sub <- dplyr::filter(data2,data2$layer_id == data1$depth[i])
-      index <- data1$angle[i]/360 * npoint
-      data1$x[i] <- sub$x[index]
-      data1$y[i] <- sub$y[index]
+      sub2 <- dplyr::filter(layers,layers$layer_id == tree$depth[i])
+      index <- tree$angle[i]/360 * npoint
+      tree$x[i] <- sub2$x[index]
+      tree$y[i] <- sub2$y[index]
     }
   }
-  root_data <- dplyr::filter(data1, data1$depth == 0)
+  root_data <- dplyr::filter(tree, tree$depth == 0)
   root <- root_data$id[1]
-  data1$x[root] <- 0
-  data1$y[root] <- 0
-  return(data1)
+  tree$x[root] <- 0
+  tree$y[root] <- 0
+
+  return(tree)
 }
 
 
@@ -239,8 +246,8 @@ getCoordinates <- function (data1, data2, npoint) {
 #' the arc/horisontal line along with it and the path to its parent node, the tips
 #' nodeGroup is similar to internal node but without the arc line.
 #'
-#' @param data1 tree data frame with updated x y coordinate information
-#' @param data2 layer data frame contaions all layers data
+#' @param tree tree data frame with updated x y coordinate information
+#' @param layers layer data frame contaions all layers data
 #' @param idx the index of the point in tree data frame
 #' @param plot_arg pass the base plot to adding more layer on top of it
 #' @param npoint the number of points of each layer
@@ -251,21 +258,21 @@ getCoordinates <- function (data1, data2, npoint) {
 #' @import ggplot2
 #' @import dplyr
 #'
-nodeGroup <- function(data1, data2, idx, plot_arg, npoint, tip = FALSE) {
+nodeGroup <- function(tree, layers, idx, plot_arg, npoint, tip = FALSE) {
   # Vertical line / radiate line connect its parent to itself: require depth_length column and angle
   # calculate start point x and y
-  target <- dplyr::filter(data1, data1$id == idx)
+  target <- dplyr::filter(tree, tree$id == idx)
   st_x <- target$x
   st_y <- target$y
   # parent depth = self depth - depth length
   if(tip == FALSE) {
     p_depth <- target$depth - target$depth_length
   }else{
-    max_d = max(data1$depth)
+    max_d = max(tree$depth)
     p_depth <- max_d - target$depth_length
   }
   # calculate end point x and y
-  one_layer <- dplyr::filter(data2, data2$layer_id == p_depth)
+  one_layer <- dplyr::filter(layers, layers$layer_id == p_depth)
   index <- floor(target$angle/360 * npoint) + 1
 
   if(target$depth == 1){
@@ -278,14 +285,13 @@ nodeGroup <- function(data1, data2, idx, plot_arg, npoint, tip = FALSE) {
 
   # construct a df with start point and end point coordinates
   node_data <- data.frame(st_x, st_y, ep_x, ep_y)
-
   plot_res <- plot_arg + ggplot2::geom_segment(aes(x = st_x, y = st_y, xend = ep_x , yend = ep_y, colour = "segment"), data = node_data)
 
   # Horizontal/arc line connect two support child point require c1_a and c2_a and depth/radius
   if(tip == FALSE) {
     c1_index <- target$c1_a/360 * npoint
     c2_index <- target$c2_a/360 * npoint
-    node_df <- dplyr::filter(data2 ,data2$layer_id == target$depth)
+    node_df <- dplyr::filter(layers ,layers$layer_id == target$depth)
     # plot the arc along the internal node
     plot_res <- plot_res + ggplot2::geom_path(data = node_df[c(c1_index:c2_index),], ggplot2::aes(colour = "segment"))
   }
@@ -328,10 +334,10 @@ treePlot <- function(xy_data, layer_data, npoint) {
     ggplot2::geom_point(aes(x = 0, y = 0), colour = "blue") +
     ggplot2::geom_point(data = no_root_data, colour = "red", size = 0.3)
   for (i in no_root_data$id){
-    result_plot <- nodeGroup(data1 = no_root_data, data2 = layer_data, idx = i, plot_arg = result_plot,np = npoint, tip = (i < root))
-
+    result_plot <- nodeGroup(tree = no_root_data, layers = layer_data, idx = i, plot_arg = result_plot, np = npoint, tip = (i < root))
   }
   return(result_plot)
+
 }
 
 

@@ -9,7 +9,7 @@ circleFun(center = c(0, 0), r = 10, npoints = 100)
 \arguments{
 \item{center}{the center of the circle}
 
-\item{r}{the radius of the circle}
+\item{r}{radius of the circle}
 
 \item{npoints}{a sequence of number with a distance of "by" by = ((to - from)/(length.out - 1)),}
 }
@@ -19,6 +19,9 @@ data frame of points with their x, y coordinates information that form the circl
 \description{
 This function is usend to collecting a data frame of points which together form
 a circle based on the diameter/radius and angle according to x-y axis
+}
+\details{
+the built in "pi" is not exactly equal to qi due to rounding,
 }
 \examples{
 

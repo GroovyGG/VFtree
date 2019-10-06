@@ -4,11 +4,13 @@
 \alias{combinedPlotting}
 \title{combinePlotting}
 \usage{
-combinedPlotting(inputCSV, inputTree)
+combinedPlotting(inputCSV, inputTree, inputNum)
 }
 \arguments{
 \item{inputCSV}{input the generated csv file with pathogenic potential information
 of each virulence factor of each strain}
+
+\item{inputNum}{the number of input strains}
 
 \item{inputNWK}{input the generated nwk file of the taxonomic information between strains}
 }

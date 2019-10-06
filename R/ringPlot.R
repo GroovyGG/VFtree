@@ -27,8 +27,8 @@ tableInputProcess <- function(input_name){
 #'
 #'
 #' @param ring_table_data data frame containing all information about the input table/csv
-#' @param distance_between_tree_and_ring distance between the tree and the ring
-#' @param distance_between_ring_and_ring distance between ring and ring
+#' @param distance_between_tree_and_ring this is the unit distance/ radius difference between the tree and the first ring
+#' @param distance_between_ring_and_ring this is the unit distance/ radius difference between rings
 #' @param tree_outer_radius tree outer radius
 #' @return data frame containing responding radius and rings
 #'
@@ -64,7 +64,7 @@ getRingRadius <- function(ring_table_data, distance_between_tree_and_ring = 1, d
 #' @param table_data input the table from table process
 #' @param tree_depth the max depth of the tree
 #' @param ring_radius the radius
-#' @param refine_factor_for_ring refine factor of the plotting ring
+#' @param ring_refine_factor refine factor of the plotting ring
 #' @return data frame containing x and y coordinate of one ring with npoint index
 #'
 #' @examples
