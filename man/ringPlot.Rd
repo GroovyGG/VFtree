@@ -2,13 +2,7 @@
 % Please edit documentation in R/ringPlot.R
 \name{ringPlot}
 \alias{ringPlot}
-\title{ringPlot
-
-This function is used to plot the rings of factoer present/absent of that specific tip
-based on the data from the table
-loop the column of the table data frame to plot each ring aroud the tree
-
-\code{getRingData}}
+\title{ringPlot}
 \usage{
 ringPlot(ring_table_data, radius_data, tree_max_depth,
   present_rate = 0.5, tree_plot)
@@ -28,13 +22,10 @@ ringPlot(ring_table_data, radius_data, tree_max_depth,
 The ring plot based on the tree plot
 }
 \description{
-ringPlot
-
-This function is used to plot the rings of factoer present/absent of that specific tip
-based on the data from the table
-loop the column of the table data frame to plot each ring aroud the tree
-
-\code{getRingData}
+This function is used to plot the rings of factoer present/absent of that
+specific strain mapped in the tree based on the data from the table,
+the same id name mapped to tree data loop the column of the ring_table_data
+to plot each ring aroud the tree
 }
 \examples{
 

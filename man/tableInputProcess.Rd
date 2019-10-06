@@ -2,9 +2,7 @@
 % Please edit documentation in R/ringPlot.R
 \name{tableInputProcess}
 \alias{tableInputProcess}
-\title{tableProcess
-
-\code{tree_input_process} preprocess the phylo object from the input tree file with newick format}
+\title{tableInputProcess}
 \usage{
 tableInputProcess(input_name)
 }
@@ -15,8 +13,6 @@ tableInputProcess(input_name)
 data frame containing all information about the input table/csv
 }
 \description{
-tableProcess
-
 \code{tree_input_process} preprocess the phylo object from the input tree file with newick format
 }
 \examples{

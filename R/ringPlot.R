@@ -4,18 +4,11 @@
 
 ###############################
 
-# library(dplyr)
-# library(ape)
-# library(ggplot2)
-# library(igraph)
-# library(phytools)
-# library(phangorn)
+source("R/treePlot.R")
 
 ###############################
 
-source("R/treePlot.R")
-
-#' @title tableProcess
+#' tableInputProcess
 #'
 #' \code{tree_input_process} preprocess the phylo object from the input tree file with newick format
 #'
@@ -30,7 +23,7 @@ tableInputProcess <- function(input_name){
   return(table)
 }
 
-#' @title getRingRadius
+#' getRingRadius
 #'
 #'
 #' @param ring_table_data data frame containing all information about the input table/csv
@@ -41,6 +34,7 @@ tableInputProcess <- function(input_name){
 #'
 #' @examples
 #'
+#' @import dplyr
 #'
 getRingRadius <- function(ring_table_data, distance_between_tree_and_ring = 1, distance_between_ring_and_ring = 1, tree_outer_radius) {
   list_of_factors <- colnames(ring_table_data)
@@ -59,9 +53,10 @@ getRingRadius <- function(ring_table_data, distance_between_tree_and_ring = 1, d
 }
 
 
-#' @title getRingData
+#' getRingData
 #'
-#' This function is used to create a data frame about ring x and y coordinates
+#' This function is used to create a data frame about the points that form the ring
+#' with their x, y coordinates
 #'
 #'  \code{circleFun}
 #'
@@ -74,21 +69,20 @@ getRingRadius <- function(ring_table_data, distance_between_tree_and_ring = 1, d
 #'
 #' @examples
 #'
-#'
-getRingData <- function(center_point = c(0,0), table_data, tree_depth, ring_radius, refine_factor_for_ring = 20) {
+
+getRingData <- function(center_point = c(0,0), table_data, tree_depth, ring_radius, ring_refine_factor = 20) {
   table_length <- nrow(table_data)
-  ring_radius
   ring_data_point <- circleFun(center = center_point, r = ring_radius , npoints = table_length)
   return(ring_data_point)
 }
 
-#' @title ringPlot
+#' ringPlot
 #'
-#' This function is used to plot the rings of factoer present/absent of that specific tip
-#' based on the data from the table
-#' loop the column of the table data frame to plot each ring aroud the tree
+#' This function is used to plot the rings of factoer present/absent of that
+#' specific strain mapped in the tree based on the data from the table,
+#' the same id name mapped to tree data loop the column of the ring_table_data
+#' to plot each ring aroud the tree
 #'
-#'  \code{getRingData}
 #'
 #' @param ring_table_data data frame from table_processed
 #' @param radius_data  data frame of radius and ring
@@ -111,22 +105,4 @@ ringPlot <- function(ring_table_data, radius_data, tree_max_depth, present_rate 
   return(ring_plot)
 }
 
-# function calls start here
-# df <- treeInputProcess(inputname = "sample25.newick")
-# refine_f = 40
-# p <- getNPoints(data = df,refine_factor = refine_f)
-# layers <- getLayers(data = df, npoint =  p, center = c(0,0))
-# xy_df <- getCoordinates(data1 = df, data2 = layers, npoint = p)
-# final_tree_plot <- NULL
-# final_tree_plot <- treePlot(xy_data = xy_df, layer_data = layers, npoint = p)
-# center_point <- c(0,0)
-# table_for_ring <- tableInputProcess(input_name = "table25.csv")
-# max_d_of_tree <- max(df$depth)
-# table_ring_radius <- getRingRadius(ring_table_data = table_for_ring, tree_outer_radius = max_d_of_tree)
-# r_data <- structure(as.vector(table_ring_radius$ring_radius), names=as.vector(table_ring_radius$factor))
-#
-# table_length <- nrow(table_for_ring)
-# ring_plot <- ringPlot(ring_table_data = table_for_ring, radius_data = r_data, tree_max_depth = max_d_of_tree, tree_plot = final_tree_plot )
-#
-# ring_plot
 

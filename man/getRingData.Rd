@@ -2,14 +2,10 @@
 % Please edit documentation in R/ringPlot.R
 \name{getRingData}
 \alias{getRingData}
-\title{getRingData
-
-This function is used to create a data frame about ring x and y coordinates
-
-\code{circleFun}}
+\title{getRingData}
 \usage{
 getRingData(center_point = c(0, 0), table_data, tree_depth, ring_radius,
-  refine_factor_for_ring = 20)
+  ring_refine_factor = 20)
 }
 \arguments{
 \item{center_point}{center of the ring}
@@ -26,13 +22,12 @@ getRingData(center_point = c(0, 0), table_data, tree_depth, ring_radius,
 data frame containing x and y coordinate of one ring with npoint index
 }
 \description{
-getRingData
-
-This function is used to create a data frame about ring x and y coordinates
-
+This function is used to create a data frame about the points that form the ring
+with their x, y coordinates
+}
+\details{
 \code{circleFun}
 }
 \examples{
-
 
 }

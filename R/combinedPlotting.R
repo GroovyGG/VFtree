@@ -4,25 +4,33 @@
 
 ###############################
 
+# library(ggplot2)
+# library(igraph)
+# library(ape)
+# library(phytools)
+# library(phangorn)
+# library(dplyr)
 
-library(ggplot2)
-library(igraph)
-library(ape)
-library(phytools)
-library(phangorn)
-library(dplyr)
+###############################
 
 source("R/treePlot.R")
 source("R/ringPlot.R")
 
 
+#' combinePlotting
+#'
 #' The main plotting function to combine the two parts of the workflow
 #'
-#' \code{combinedPlotting} The function will generate a newick file with relationships between genome
+#' This function is used to plot a tree from the newick input, on top of
+#' it plot the factor information according to each strain of the tree
+#' and plot as rings around the tree
 #'
-#' @param inputCSV the generated csv file with present and absent of VF of each strain
-#' @param inputNWK the generated nwk file of the relationship between strains
-#' @return Combined plotting of the data from csv and tree from newick file
+#'
+#' @param inputCSV input the generated csv file with pathogenic potential information
+#' of each virulence factor of each strain
+#' @param inputNWK input the generated nwk file of the taxonomic information between strains
+#' @return Combined the plotting of circular tree and factor ring from the
+#' data of tree(newick file) and table(csv/tsv file)
 #'
 #' @examples
 #'
@@ -30,8 +38,10 @@ source("R/ringPlot.R")
 #' @import ape
 #' @import phytools
 #' @import igraph
-#' @import phangorn
 #' @import dplyr
+#'
+#' @export
+
 combinedPlotting <- function(inputCSV, inputTree) {
   # inputCSV <- "table100.csv"
   # inputTree <- "sample100.newick"
@@ -59,16 +69,20 @@ combinedPlotting <- function(inputCSV, inputTree) {
 
 }
 
-#test cases
-plot1 <- NULL
-plot1 <- combinedPlotting("inst/extdata/table100.csv", "inst/extdata/sample100.newick")
-plot1
-# plot2 <- NULL
-# plot2 <- combinedPlotting("table25.csv", "sample25.newick")
-# combinedPlotting("table150.csv", "sample150.newick")
+# ############################### sample test cases
 
+# plot25 <- NULL
+# plot25 <- combinedPlotting("inst/extdata/table25.csv", "inst/extdata/sample25.newick")
+# plot25
+# plot100 <- NULL
+# plot100 <- combinedPlotting("inst/extdata/table100.csv", "inst/extdata/sample100.newick")
+# plot100
+# plot150 <- NULL
+# plot150 <- combinedPlotting("inst/extdata/table150.csv", "inst/extdata/sample150.newick")
+# plot150
 
-# function calls start here
+# ############################### function calls start here
+
 # df <- treeInputProcess(inputname = "sample25.newick")
 # refine_f = 40
 # p <- getNPoints(data = df,refine_factor = refine_f)
@@ -85,3 +99,4 @@ plot1
 # ring_plot <- ringPlot(ring_table_data = table_for_ring, radius_data = r_data, tree_max_depth = max_d_of_tree, tree_plot = final_tree_plot )
 #
 # ring_plot
+

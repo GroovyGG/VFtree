@@ -2,20 +2,27 @@
 % Please edit documentation in R/combinedPlotting.R
 \name{combinedPlotting}
 \alias{combinedPlotting}
-\title{The main plotting function to combine the two parts of the workflow}
+\title{combinePlotting}
 \usage{
 combinedPlotting(inputCSV, inputTree)
 }
 \arguments{
-\item{inputCSV}{the generated csv file with present and absent of VF of each strain}
+\item{inputCSV}{input the generated csv file with pathogenic potential information
+of each virulence factor of each strain}
 
-\item{inputNWK}{the generated nwk file of the relationship between strains}
+\item{inputNWK}{input the generated nwk file of the taxonomic information between strains}
 }
 \value{
-Combined plotting of the data from csv and tree from newick file
+Combined the plotting of circular tree and factor ring from the
+data of tree(newick file) and table(csv/tsv file)
 }
 \description{
-\code{combinedPlotting} The function will generate a newick file with relationships between genome
+The main plotting function to combine the two parts of the workflow
+}
+\details{
+This function is used to plot a tree from the newick input, on top of
+it plot the factor information according to each strain of the tree
+and plot as rings around the tree
 }
 \examples{
 
