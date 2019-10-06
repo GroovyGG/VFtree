@@ -25,4 +25,4 @@ This is a basic example which shows you how to solve a common problem:
 library(VFtree)
 ## basic example code
 ```
-
+![GitHub Logo](./pitch.png)
