@@ -8,10 +8,13 @@ The goal of VFtree is to ...
 
 ## Installation
 
-You can install the released version of VFtree from [CRAN](https://CRAN.R-project.org) with:
+You can install the released version of VFtree  GitHub using the following code:
 
 ``` r
-install.packages("VFtree")
+ library(devtools)
+ install github("<user name>/<package name>")
+ library(<package name>)
+
 ```
 
 ## Example
