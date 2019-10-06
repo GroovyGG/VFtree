@@ -25,7 +25,7 @@ source("R/treePlot.R")
 #' @examples
 #'
 
-tableProcess <- function(input_name){
+tableInputProcess <- function(input_name){
   table <- read.csv(input_name)
   return(table)
 }
@@ -112,7 +112,7 @@ ringPlot <- function(ring_table_data, radius_data, tree_max_depth, present_rate 
 }
 
 # function calls start here
-# df <- input_process(inputname = "sample25.newick")
+# df <- treeInputProcess(inputname = "sample25.newick")
 # refine_f = 40
 # p <- getNPoints(data = df,refine_factor = refine_f)
 # layers <- getLayers(data = df, npoint =  p, center = c(0,0))
@@ -120,7 +120,7 @@ ringPlot <- function(ring_table_data, radius_data, tree_max_depth, present_rate 
 # final_tree_plot <- NULL
 # final_tree_plot <- treePlot(xy_data = xy_df, layer_data = layers, npoint = p)
 # center_point <- c(0,0)
-# table_for_ring <- tableProcess(input_name = "table25.csv")
+# table_for_ring <- tableInputProcess(input_name = "table25.csv")
 # max_d_of_tree <- max(df$depth)
 # table_ring_radius <- getRingRadius(ring_table_data = table_for_ring, tree_outer_radius = max_d_of_tree)
 # r_data <- structure(as.vector(table_ring_radius$ring_radius), names=as.vector(table_ring_radius$factor))

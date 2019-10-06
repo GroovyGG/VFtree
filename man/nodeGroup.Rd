@@ -2,11 +2,7 @@
 % Please edit documentation in R/treePlot.R
 \name{nodeGroup}
 \alias{nodeGroup}
-\title{nodeGroup
-
-This function is adding node plot of a nodeGroup
-each time plot one node. a node group include the node,
-the arc around it and the path to its parent node}
+\title{nodeGroup}
 \usage{
 nodeGroup(data1, data2, idx, plot_arg, npoint, tip = FALSE)
 }
@@ -24,11 +20,10 @@ nodeGroup(data1, data2, idx, plot_arg, npoint, tip = FALSE)
 \item{tip}{this flag is for detecting wjether the point is tip or internal node}
 }
 \description{
-nodeGroup
-
-This function is adding node plot of a nodeGroup
-each time plot one node. a node group include the node,
-the arc around it and the path to its parent node
+This function is adding a new layer plot of a nodeGroup on the previous plot
+each time plot one node. a nodeGroup of the internal node is composed of the node,
+the arc/horisontal line along with it and the path to its parent node, the tips
+nodeGroup is similar to internal node but without the arc line.
 }
 \examples{
 

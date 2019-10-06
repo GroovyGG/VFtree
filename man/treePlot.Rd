@@ -2,10 +2,7 @@
 % Please edit documentation in R/treePlot.R
 \name{treePlot}
 \alias{treePlot}
-\title{treePlot
-
-The base tree plotting and a while loop which calling the nodeGroup
-and add a nodeGroup each time by adding a layer of the ggplot}
+\title{treePlot}
 \usage{
 treePlot(xy_data, layer_data, npoint)
 }
@@ -22,10 +19,11 @@ treePlot(xy_data, layer_data, npoint)
 the plot of the tree part
 }
 \description{
-treePlot
-
-The base tree plotting and a while loop which calling the nodeGroup
-and add a nodeGroup each time by adding a layer of the ggplot
+This function is used to inital a base tree ploting using ggplot2
+This function is composed of two parts: the base tree plotting with
+only nodes present without any lines/paths and a loop which calling
+the nodeGroup function to adding data and add a nodeGroup each time
+by adding a layer of the ggplot
 }
 \examples{
 

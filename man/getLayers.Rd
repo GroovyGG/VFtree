@@ -2,16 +2,14 @@
 % Please edit documentation in R/treePlot.R
 \name{getLayers}
 \alias{getLayers}
-\title{getLayers
-
-\code{circleFun} call circle function in this function for}
+\title{getLayers}
 \usage{
 getLayers(data, npoint, center = c(0, 0))
 }
 \arguments{
-\item{data}{tree data frame}
+\item{data}{tree data frame without x,y coordinate function}
 
-\item{npoint}{the number of points of each layer}
+\item{npoint}{the total number of points of each layer}
 
 \item{center}{the center of the circle}
 }
@@ -19,9 +17,14 @@ getLayers(data, npoint, center = c(0, 0))
 num_p is the number of points of each layer
 }
 \description{
-getLayers
-
-\code{circleFun} call circle function in this function for
+This function is used to generate the layer data frame,
+The layer data frame composed of x, y coordinate for tree layer
+of different depth/radius points data.
+}
+\details{
+call circle function in this function for each circular data frame
+and use rbind to stack all data together in one data frame, mark its
+radius in an additional column named layer_id.
 }
 \examples{
 

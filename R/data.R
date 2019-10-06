@@ -1,3 +1,9 @@
+############################### combinedPlotting.R
+# Date: 5 October 2019
+# Author: Bihan Zhu <bihan.zhu@mail.utoronto.ca>
+
+###############################
+
 #' Table25
 #'
 #' A dataset contain 25 factor tree node info

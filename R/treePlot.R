@@ -13,7 +13,7 @@
 
 ###############################
 
-#' @title tree_input_process
+#' treeInputProcess
 #'
 #' \code{tree_input_process} preprocess the phylo object from the input tree file with newick format
 #'
@@ -26,7 +26,8 @@
 #' @import igraph
 #' @import dplyr
 #' @import phytools
-tree_input_process <- function(inputname = "sample1.newick"){
+
+treeInputProcess <- function(inputname = "sample100.newick"){
   # inputname = "sample150.newick"
   tree <-(ape::read.tree(inputname))
   rt1 <- dplyr::setdiff(tree$edge[,1],tree$edge[,2]) # find Root from "phylo" object tree
@@ -110,16 +111,15 @@ tree_input_process <- function(inputname = "sample1.newick"){
 }
 
 
-
-#' @title circleFun
+#' circleFun
 #'
-#' collecting data frame of arc/point based on the diameter/radius and angle according to x-y axis
-#' \code{circleFun} circle function for collecting a dataset of dots for a circle
+#' This function is usend to collecting a data frame of points which together form
+#' a circle based on the diameter/radius and angle according to x-y axis
 #'
-#' @param center center of the circle
-#' @param r radius of the circle
+#' @param center the center of the circle
+#' @param r the radius of the circle
 #' @param npoints  a sequence of number with a distance of "by" by = ((to - from)/(length.out - 1)),
-#' @return data frame of dots x and y coordinate for the circle
+#' @return data frame of points with their x, y coordinates information that form the circle
 #'
 #' @examples
 #'
@@ -134,14 +134,17 @@ circleFun <- function(center = c(0,0), r = 10, npoints = 100){
   return(data.frame(x = xx, y = yy))
 }
 
+test1 <- circleFun( npoints = 10)
+
 
 #' @title getNPoints
 #'
-#' \code{getNPoints}
+#' This function is used to caculate the number of points for each circular
+#' shaped data frame such as the rings and each layer of the tree
 #'
 #' @param data tree data frame
 #' @param refine_factor factor of how many points plotted each circle
-#' @return num_p is the number of points of each layer
+#' @return The total number of points of each circular shape data
 #'
 #' @examples
 #'
@@ -152,12 +155,18 @@ getNPoints <- function (data,refine_factor = 100){
   return(num_p)
 }
 
-#' @title getLayers
+#' getLayers
 #'
-#' \code{circleFun} call circle function in this function for
+#' This function is used to generate the layer data frame,
+#' The layer data frame composed of x, y coordinate for tree layer
+#' of different depth/radius points data.
 #'
-#' @param data tree data frame
-#' @param npoint the number of points of each layer
+#' call circle function in this function for each circular data frame
+#' and use rbind to stack all data together in one data frame, mark its
+#' radius in an additional column named layer_id.
+#'
+#' @param data tree data frame without x,y coordinate function
+#' @param npoint the total number of points of each layer
 #' @param center the center of the circle
 #' @return num_p is the number of points of each layer
 #'
@@ -188,15 +197,15 @@ getLayers <- function (data, npoint, center = c(0,0)) {
 
 }
 
-#' @title getCoordinates
+#' getCoordinates
 #'
-#'  This function take input of the tree data and layer data and autput the tree
-#'  data with coordinate info of each node get Coordinates
+#' This function take input of the tree data and layer data, output the tree
+#' data frame with two more columns contain the x,y coordinate info of each node
 #'
-#' @param data1 tree data frame
+#' @param data1 tree data frame without x,y coordinate
 #' @param data2 layer data frame contaions all layers data
 #' @param npoint the number of points of each layer
-#' @return updated tree data frame with x and y coordinates
+#' @return updated tree data frame two new columns of x, y coordinates
 #'
 #' @examples
 #'
@@ -219,16 +228,16 @@ getCoordinates <- function (data1, data2, npoint) {
   root <- root_data$id[1]
   data1$x[root] <- 0
   data1$y[root] <- 0
-  #print(data1)
   return(data1)
 }
 
 
-#' @title nodeGroup
+#' nodeGroup
 #'
-#'  This function is adding node plot of a nodeGroup
-#'  each time plot one node. a node group include the node,
-#'  the arc around it and the path to its parent node
+#' This function is adding a new layer plot of a nodeGroup on the previous plot
+#' each time plot one node. a nodeGroup of the internal node is composed of the node,
+#' the arc/horisontal line along with it and the path to its parent node, the tips
+#' nodeGroup is similar to internal node but without the arc line.
 #'
 #' @param data1 tree data frame with updated x y coordinate information
 #' @param data2 layer data frame contaions all layers data
@@ -238,6 +247,9 @@ getCoordinates <- function (data1, data2, npoint) {
 #' @param tip this flag is for detecting wjether the point is tip or internal node
 #'
 #' @examples
+#'
+#' @import ggplot2
+#' @import dplyr
 #'
 nodeGroup <- function(data1, data2, idx, plot_arg, npoint, tip = FALSE) {
   # Vertical line / radiate line connect its parent to itself: require depth_length column and angle
@@ -282,10 +294,13 @@ nodeGroup <- function(data1, data2, idx, plot_arg, npoint, tip = FALSE) {
 }
 
 
-#' @title treePlot
+#' treePlot
 #'
-#'  The base tree plotting and a while loop which calling the nodeGroup
-#'  and add a nodeGroup each time by adding a layer of the ggplot
+#' This function is used to inital a base tree ploting using ggplot2
+#' This function is composed of two parts: the base tree plotting with
+#' only nodes present without any lines/paths and a loop which calling
+#' the nodeGroup function to adding data and add a nodeGroup each time
+#' by adding a layer of the ggplot
 #'
 #' @param xy_data tree data frame with updated x y coordinate information
 #' @param layer_data layer data frame contaions all layers data
@@ -304,6 +319,7 @@ treePlot <- function(xy_data, layer_data, npoint) {
   root <- root_data$id[1]
   # remove roots here by filtered the tree df
   no_root_data <- dplyr::filter(xy_data, xy_data$id != root)
+
   # https://felixfan.github.io/ggplot2-remove-grid-background-margin/
   base_plot <- ggplot2::ggplot(xy_data, aes(x, y)) + ggplot2::coord_fixed(ratio = 1) +
     theme_bw() +

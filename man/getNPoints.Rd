@@ -4,7 +4,8 @@
 \alias{getNPoints}
 \title{getNPoints
 
-\code{getNPoints}}
+This function is used to caculate the number of points for each circular
+shaped data frame such as the rings and each layer of the tree}
 \usage{
 getNPoints(data, refine_factor = 100)
 }
@@ -14,12 +15,13 @@ getNPoints(data, refine_factor = 100)
 \item{refine_factor}{factor of how many points plotted each circle}
 }
 \value{
-num_p is the number of points of each layer
+The total number of points of each circular shape data
 }
 \description{
 getNPoints
 
-\code{getNPoints}
+This function is used to caculate the number of points for each circular
+shaped data frame such as the rings and each layer of the tree
 }
 \examples{
 

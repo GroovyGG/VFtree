@@ -2,28 +2,23 @@
 % Please edit documentation in R/treePlot.R
 \name{getCoordinates}
 \alias{getCoordinates}
-\title{getCoordinates
-
-This function take input of the tree data and layer data and autput the tree
-data with coordinate info of each node get Coordinates}
+\title{getCoordinates}
 \usage{
 getCoordinates(data1, data2, npoint)
 }
 \arguments{
-\item{data1}{tree data frame}
+\item{data1}{tree data frame without x,y coordinate}
 
 \item{data2}{layer data frame contaions all layers data}
 
 \item{npoint}{the number of points of each layer}
 }
 \value{
-updated tree data frame with x and y coordinates
+updated tree data frame two new columns of x, y coordinates
 }
 \description{
-getCoordinates
-
-This function take input of the tree data and layer data and autput the tree
-data with coordinate info of each node get Coordinates
+This function take input of the tree data and layer data, output the tree
+data frame with two more columns contain the x,y coordinate info of each node
 }
 \examples{
 

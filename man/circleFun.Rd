@@ -2,28 +2,23 @@
 % Please edit documentation in R/treePlot.R
 \name{circleFun}
 \alias{circleFun}
-\title{circleFun
-
-collecting data frame of arc/point based on the diameter/radius and angle according to x-y axis
-\code{circleFun} circle function for collecting a dataset of dots for a circle}
+\title{circleFun}
 \usage{
 circleFun(center = c(0, 0), r = 10, npoints = 100)
 }
 \arguments{
-\item{center}{center of the circle}
+\item{center}{the center of the circle}
 
-\item{r}{radius of the circle}
+\item{r}{the radius of the circle}
 
 \item{npoints}{a sequence of number with a distance of "by" by = ((to - from)/(length.out - 1)),}
 }
 \value{
-data frame of dots x and y coordinate for the circle
+data frame of points with their x, y coordinates information that form the circle
 }
 \description{
-circleFun
-
-collecting data frame of arc/point based on the diameter/radius and angle according to x-y axis
-\code{circleFun} circle function for collecting a dataset of dots for a circle
+This function is usend to collecting a data frame of points which together form
+a circle based on the diameter/radius and angle according to x-y axis
 }
 \examples{
 

@@ -37,7 +37,7 @@ combinedPlotting <- function(inputCSV, inputTree) {
   # inputTree <- "sample100.newick"
   tree_refine_f = 40
 
-  df <- tree_input_process(inputname = inputTree)
+  df <- treeInputProcess(inputname = inputTree)
   p <- getNPoints(data = df,refine_factor = tree_refine_f)
   layers <- getLayers(data = df, npoint = p)
   xy_df <- getCoordinates(data1 = df, data2 = layers, npoint = p)
@@ -47,7 +47,7 @@ combinedPlotting <- function(inputCSV, inputTree) {
 
   # table data process
   center_point <- c(0,0)
-  table_for_ring <- tableProcess(input_name = inputCSV)
+  table_for_ring <- tableInputProcess(input_name = inputCSV)
   max_d_of_tree <- max(df$depth)
   table_ring_radius <- getRingRadius(ring_table_data = table_for_ring, tree_outer_radius = max_d_of_tree)
   table_length <- nrow(table_for_ring)
@@ -69,7 +69,7 @@ plot1
 
 
 # function calls start here
-# df <- input_process(inputname = "sample25.newick")
+# df <- treeInputProcess(inputname = "sample25.newick")
 # refine_f = 40
 # p <- getNPoints(data = df,refine_factor = refine_f)
 # layers <- getLayers(data = df, npoint =  p, center = c(0,0))
@@ -77,7 +77,7 @@ plot1
 # final_tree_plot <- NULL
 # final_tree_plot <- treePlot(xy_data = xy_df, layer_data = layers, npoint = p)
 # center_point <- c(0,0)
-# table_for_ring <- tableProcess(input_name = "table25.csv")
+# table_for_ring <- tableInputProcess(input_name = "table25.csv")
 # max_d_of_tree <- max(df$depth)
 # table_ring_radius <- getRingRadius(ring_table_data = table_for_ring, tree_outer_radius = max_d_of_tree)
 # table_length <- nrow(table_for_ring)
