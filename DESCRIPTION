@@ -3,13 +3,25 @@ Type: Package
 Title: visualization of combined Virulence Factors and Phylogenetic Tree
 Version: 0.1.0
 Author: Bihan Zhu
+Authors@R: person("Zhu", "Bihan", email = "bihan.zhu@mail.utoronto.ca", role = c("aut", "cre"))
 Maintainer: Bihan Zhu <bihan.zhu@mail.utoronto.ca>
-Description: VFtree is a package which is  able to  take the input in 
-    fasta/fastq format , process the data, constructed visualization of 
-    the core genome phylogenetic tree to associate virulence factor 
+Description: VFtree is a package which is  able to  take the tree input in 
+    newick format and the vfactors present/absent data in csv/tsv file , process the data, 
+    constructed visualization of the core genome phylogenetic tree to associate virulence factor 
     presence/absence with other strain attributes
 License: MIT + file LICENSE
+Depends: R (>= 3.1.0)
 Encoding: UTF-8
 LazyData: true
 Imports: 
-    roxygen2
+    roxygen2,
+    dplyr,
+    ggplot2,
+    ape,
+    igraph,
+    phytools
+Suggests: 
+    devtools,
+    usethis
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 6.1.1
