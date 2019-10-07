@@ -18,4 +18,4 @@ You can install the released version of VFtree  GitHub using the following code:
 ```
 
 
-![GitHub Logo](./pitch.png)
+![GitHub Logo](./inst/extdata/pitch.png)
