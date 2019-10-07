@@ -25,15 +25,3 @@ each time plot one node. a nodeGroup of the internal node is composed of the nod
 the arc/horisontal line along with it and the path to its parent node, the tips
 nodeGroup is similar to internal node but without the arc line.
 }
-\examples{
-
-index <- 31
-base_plot <- ggplot2(aes(x,y), data = xy_df_25)
-nodeGroup(tree = xy_df_25 ,
-                 layers = tree_layers_25,
-                 idx = index,
-                 plot_arg = base_plot,
-                 npoint = 25,
-                 tip = FALSE)
-
-}

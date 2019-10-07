@@ -27,7 +27,3 @@ shaped data frame such as the rings and each circular layer of the tree
 
 The calculation here is based on num_tips is equal to
 }
-\examples{
-getNPoints(ntips = 25, refine_factor = 100) # 2500
-
-}

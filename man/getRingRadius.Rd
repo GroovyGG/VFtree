@@ -22,10 +22,3 @@ data frame containing responding radius and rings
 \description{
 getRingRadius
 }
-\examples{
-getRingRadius(ring_table_data = Table25,
-            distance_between_tree_and_ring = 1,
-            distance_between_ring_and_ring = 1,
-            tree_outer_radius = 5)
-
-}

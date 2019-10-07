@@ -160,8 +160,6 @@ circleFun <- function(center = c(0,0), r = 10, npoints = 100){
 #' @param refine_factor factor of how many points plotted each circle
 #' @return The total number of points of each circular shape data
 #'
-#' @examples
-#' getNPoints(ntips = 25, refine_factor = 100) # 2500
 #'
 getNPoints <- function (ntips, refine_factor = 100){
   # num_p is the number of points of each layer
@@ -275,17 +273,6 @@ getCoordinates <- function (tree, layers, npoint) {
 #' @param npoint the number of points of each layer
 #' @param tip this flag is for detecting whether the point is tip or internal node
 #'
-#' @examples
-#'
-#' index <- 31
-#' base_plot <- ggplot2(aes(x,y), data = xy_df_25)
-#' nodeGroup(tree = xy_df_25 ,
-#'                  layers = tree_layers_25,
-#'                  idx = index,
-#'                  plot_arg = base_plot,
-#'                  npoint = 25,
-#'                  tip = FALSE)
-#'
 #' @import ggplot2
 #' @importFrom dplyr filter
 #' @export
@@ -344,12 +331,6 @@ nodeGroup <- function(tree, layers, idx, plot_arg, npoint, tip = FALSE) {
 #' @param layer_data layer data frame contaions all layers data
 #' @param npoint the number of points of each layer
 #' @return the plot of the tree part
-#'
-#' @examples
-#'
-#' treePlot(xy_data = xy_df_25,
-#'          layer_data = tree_ayers_25,
-#'          npoint =  25)
 #'
 #' @import ggplot2
 #' @importFrom dplyr filter

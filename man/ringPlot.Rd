@@ -27,16 +27,3 @@ specific strain mapped in the tree based on the data from the table,
 the same id name mapped to tree data loop the column of the ring_table_data
 to plot each ring aroud the tree
 }
-\examples{
-ring_data <- getRingData <- function(center_point = c(0,0),
-                       table_data = Table25,
-                       tree_depth = 4,
-                       ring_radius = 10,
-                       ring_refine_factor = 20)
-ringPlot <- function(ring_table_data = Table25,
-                    radius_data = ring_data,
-                    tree_max_depth = 5,
-                    present_rate = 0.5,
-                    tree_plot = base_plot)
-
-}

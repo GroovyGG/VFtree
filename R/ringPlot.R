@@ -15,8 +15,6 @@ source("R/treePlot.R")
 #' @param table the string of the location of the input table/csv
 #' @return data frame containing all information about the input table/csv
 #'
-#' @examples
-#' ring_table <- tableInputProcess(Table25)
 #'
 
 tableInputProcess <- function(table){
@@ -32,12 +30,6 @@ tableInputProcess <- function(table){
 #' @param distance_between_ring_and_ring this is the unit distance/ radius difference between rings
 #' @param tree_outer_radius tree outer radius
 #' @return data frame containing responding radius and rings
-#'
-#' @examples
-#' getRingRadius(ring_table_data = Table25,
-#'             distance_between_tree_and_ring = 1,
-#'             distance_between_ring_and_ring = 1,
-#'             tree_outer_radius = 5)
 #'
 #' @importFrom dplyr filter
 #'
@@ -72,13 +64,6 @@ getRingRadius <- function(ring_table_data, distance_between_tree_and_ring = 1, d
 #' @param ring_refine_factor refine factor of the plotting ring
 #' @return data frame containing x and y coordinate of one ring with npoint index
 #'
-#' @examples
-#'getRingData <- function(center_point = c(0,0),
-#'                        table_data = Table25,
-#'                        tree_depth = 4,
-#'                        ring_radius = 10,
-#'                        ring_refine_factor = 20)
-#'
 #'
 #'
 
@@ -104,17 +89,6 @@ getRingData <- function(center_point = c(0,0), table_data, tree_depth, ring_radi
 #' @param tree_plot the tree plotting from ggplot
 #' @return The ring plot based on the tree plot
 #'
-#' @examples
-#' ring_data <- getRingData <- function(center_point = c(0,0),
-#'                        table_data = Table25,
-#'                        tree_depth = 4,
-#'                        ring_radius = 10,
-#'                        ring_refine_factor = 20)
-#' ringPlot <- function(ring_table_data = Table25,
-#'                     radius_data = ring_data,
-#'                     tree_max_depth = 5,
-#'                     present_rate = 0.5,
-#'                     tree_plot = base_plot)
 #'
 #' @import ggplot2
 #'

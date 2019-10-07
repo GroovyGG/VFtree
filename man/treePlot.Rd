@@ -23,10 +23,3 @@ only nodes present without any lines/paths and a loop which calling
 the nodeGroup function to adding data and add a nodeGroup each time
 by adding a layer of the ggplot
 }
-\examples{
-
-treePlot(xy_data = xy_df_25,
-         layer_data = tree_ayers_25,
-         npoint =  25)
-
-}
