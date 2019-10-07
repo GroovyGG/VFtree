@@ -190,7 +190,7 @@ getLayers <- function (data, npoint, ntips, center = c(0,0), unit_r = 1) {
       outer$layer_id <- max_d
       layers <- rbind(layers, outer) #rbind is used to row bind more data frame into one
     }else{
-      inner_r <- (max_d - i + 1)* unit_r
+      inner_r <- (max_d - i + 1) * unit_r
       inner <- circleFun(center = center, r = inner_r, npoints = npoint + 1)
       inner$layer_id <- (max_d - i + 1)
       layers <- rbind(layers, inner)
@@ -330,6 +330,7 @@ treePlot <- function(xy_data, layer_data, npoint) {
   result_plot <- base_plot +
     ggplot2::geom_point(aes(x = 0, y = 0), colour = "blue") +
     ggplot2::geom_point(data = no_root_data, colour = "red", size = 0.3)
+
   for (i in no_root_data$id){
     result_plot <- nodeGroup(tree = no_root_data, layers = layer_data, idx = i, plot_arg = result_plot, np = npoint, tip = (i < root))
   }

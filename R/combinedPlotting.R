@@ -4,18 +4,10 @@
 
 ###############################
 
-# library(ggplot2)
-# library(igraph)
-# library(ape)
-# library(phytools)
-# library(phangorn)
-# library(dplyr)
-
-###############################
-
 source("R/treePlot.R")
 source("R/ringPlot.R")
 
+###############################
 
 #' combinePlotting
 #'
@@ -44,59 +36,45 @@ source("R/ringPlot.R")
 #' @export
 
 combinedPlotting <- function(inputCSV, inputTree, inputNum) {
-  # inputCSV <- "inst/extdata/table100.csv"
-  # inputTree <- "inst/extdata/sample100.newick"
+
   tree_refine_f = 40
 
-  df <- treeInputProcess(inputname = inputTree)
+  df <- treeInputProcess(tree = inputTree)
   p <- getNPoints(ntips = inputNum, refine_factor = tree_refine_f)
-  tree_layers <- getLayers(data = df, npoint = p,ntips = inputNum)
+  tree_layers <- getLayers(data = df, npoint = p, ntips = inputNum)
   xy_df <- getCoordinates(tree = df, layers = tree_layers, npoint = p)
   final_tree_plot <- NULL
   final_tree_plot <- treePlot(xy_data = xy_df, layer_data = tree_layers, npoint = p)
 
   # table data process
   center_point <- c(0,0)
-  table_for_ring <- tableInputProcess(input_name = inputCSV)
+  ring_table <- inputCSV
+  # table_for_ring <- tableInputProcess(inputCSV)
   max_d_of_tree <- max(df$depth)
-  table_ring_radius <- getRingRadius(ring_table_data = table_for_ring, tree_outer_radius = max_d_of_tree)
-  table_length <- nrow(table_for_ring)
+  table_ring_radius <- getRingRadius(ring_table_data = ring_table, tree_outer_radius = max_d_of_tree)
+  table_length <- nrow(ring_table)
   ring_plot <- NULL
   r_data <- structure(as.vector(table_ring_radius$ring_radius), names=as.vector(table_ring_radius$factor))
-  ring_plot <- ringPlot(ring_table_data = table_for_ring, radius_data = r_data, tree_max_depth = max_d_of_tree, tree_plot = final_tree_plot )
+  ring_plot <- ringPlot(ring_table_data = ring_table, radius_data = r_data, tree_max_depth = max_d_of_tree, tree_plot = final_tree_plot )
 
   return(ring_plot)
 
 }
 
+
 # ############################### sample test cases
 
+# Table25 <- read.csv ("inst/extdata/table25.csv")
+# Tree25 <- ape::read.tree("inst/extdata/sample25.newick")
+
 # plot25 <- NULL
-# plot25 <- combinedPlotting("inst/extdata/table25.csv", "inst/extdata/sample25.newick", inputNum = 25)
-# plot25
 # plot100 <- NULL
-# plot100 <- combinedPlotting("inst/extdata/table100.csv", "inst/extdata/sample100.newick", inputNum = 100)
-# plot100
 # plot150 <- NULL
-# plot150 <- combinedPlotting("inst/extdata/table150.csv", "inst/extdata/sample150.newick", inputNum = 150)
+# plot25 <- combinedPlotting(Table25, Tree25, inputNum = 25)
+# plot100 <- combinedPlotting(Table100, Tree100, inputNum = 100)
+# plot150 <- combinedPlotting(Table150, Tree150, inputNum = 150)
+
+# plot25
+# plot100
 # plot150
-
-# ############################### function calls start here
-
-# df <- treeInputProcess(inputname = "sample25.newick")
-# refine_f = 40
-# p <- getNPoints(data = df,refine_factor = refine_f)
-# layers <- getLayers(data = df, npoint =  p, center = c(0,0))
-# xy_df <- getCoordinates(data1 = df, data2 = layers, npoint = p)
-# final_tree_plot <- NULL
-# final_tree_plot <- treePlot(xy_data = xy_df, layer_data = layers, npoint = p)
-# center_point <- c(0,0)
-# table_for_ring <- tableInputProcess(input_name = "table25.csv")
-# max_d_of_tree <- max(df$depth)
-# table_ring_radius <- getRingRadius(ring_table_data = table_for_ring, tree_outer_radius = max_d_of_tree)
-# table_length <- nrow(table_for_ring)
-# r_data <- structure(as.vector(table_ring_radius$ring_radius), names=as.vector(table_ring_radius$factor))
-# ring_plot <- ringPlot(ring_table_data = table_for_ring, radius_data = r_data, tree_max_depth = max_d_of_tree, tree_plot = final_tree_plot )
-#
-# ring_plot
 

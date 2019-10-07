@@ -18,8 +18,8 @@ source("R/treePlot.R")
 #' @examples
 #'
 
-tableInputProcess <- function(input_name){
-  table <- read.csv(input_name)
+tableInputProcess <- function(table){
+  #table <- read.csv(input_name)
   return(table)
 }
 

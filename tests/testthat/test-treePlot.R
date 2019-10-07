@@ -39,7 +39,9 @@ test_that("getNPoints works", {
 })
 
 test_that("getLayers works", {
-  getLayers_test <- getLayers(data = treeInputProcess_test,npoint = getNPoints_test1 , ntips = 100)
+  t1 <-treeInputProcess(tree = Tree100)
+  p1 <- getNPoints( ntips = 100)
+  getLayers_test <- getLayers(data = t1, npoint = p1 , ntips = 100)
 
   expect_equal(max(getLayers_test$layer_id), 14)
   expect_equal(nrow(getLayers_test),13 * 10000 + 100 + 14)
@@ -47,12 +49,15 @@ test_that("getLayers works", {
 })
 
 test_that("getCoordinates works", {
+  t1 <-treeInputProcess(tree = Tree100)
+  p1 <- getNPoints( ntips = 100)
+  l1 <- getLayers(data = t1, npoint = p1 , ntips = 100)
 
-  getCoordinates_test <- getCoordinates(tree = treeInputProcess_test, layers = getLayers_test, npoint = getNPoints_test1)
+  getCoordinates_test <- getCoordinates(tree =  t1, layers = l1, npoint = p1)
   expect_equal(nrow(getCoordinates_test),199)
   expect_equal(ncol(getCoordinates_test),11)
 
-  tips_test<-filter(getLayers_test,getLayers_test$layer_id == max(getLayers_test$layer_id))
+  tips_test<-filter(l1,l1$layer_id == max(l1$layer_id))
   tips_expected <- filter(getCoordinates_test,getCoordinates_test$c1 == -1)
 
   expect_equal(tips_test$x[1:100], tips_expected$x[1:100])

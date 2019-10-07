@@ -4,7 +4,7 @@
 \alias{tableInputProcess}
 \title{tableInputProcess}
 \usage{
-tableInputProcess(input_name)
+tableInputProcess(table)
 }
 \arguments{
 \item{inputname}{the string of the location of the input table/csv}
