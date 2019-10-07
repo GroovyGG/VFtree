@@ -22,4 +22,7 @@ data frame with two more columns contain the x,y coordinate info of each node
 }
 \examples{
 
+xy_data <- getCoordinates(tree = tree_df_25,
+               layers = tree_layers_25, npoint = 25 * 40)
+
 }

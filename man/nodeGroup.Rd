@@ -17,7 +17,7 @@ nodeGroup(tree, layers, idx, plot_arg, npoint, tip = FALSE)
 
 \item{npoint}{the number of points of each layer}
 
-\item{tip}{this flag is for detecting wjether the point is tip or internal node}
+\item{tip}{this flag is for detecting whether the point is tip or internal node}
 }
 \description{
 This function is adding a new layer plot of a nodeGroup on the previous plot
@@ -26,5 +26,14 @@ the arc/horisontal line along with it and the path to its parent node, the tips
 nodeGroup is similar to internal node but without the arc line.
 }
 \examples{
+
+index <- 31
+base_plot <- ggplot2(aes(x,y), data = xy_df_25)
+nodeGroup(tree = xy_df_25 ,
+                 layers = tree_layers_25,
+                 idx = index,
+                 plot_arg = base_plot,
+                 npoint = 25,
+                 tip = FALSE)
 
 }

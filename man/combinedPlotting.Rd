@@ -10,9 +10,9 @@ combinedPlotting(inputCSV, inputTree, inputNum)
 \item{inputCSV}{input the generated csv file with pathogenic potential information
 of each virulence factor of each strain}
 
-\item{inputNum}{the number of input strains}
+\item{inputTree}{input the generated nwk file of the taxonomic information between strains}
 
-\item{inputNWK}{input the generated nwk file of the taxonomic information between strains}
+\item{inputNum}{the number of input strains}
 }
 \value{
 Combined the plotting of circular tree and factor ring from the
@@ -27,5 +27,8 @@ it plot the factor information according to each strain of the tree
 and plot as rings around the tree
 }
 \examples{
+result_plot <- combinedPlotting(inputCSV = Table25,
+                                inputTree = Tree25,
+                                inputNum = 25)
 
 }

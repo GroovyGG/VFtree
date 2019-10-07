@@ -11,6 +11,7 @@
 #' @format A data frame with 6 rows and 4 columns:
 #' \describe{
 #'   \item{X}{name reference of the strains}
+#'   \item{X.1}{name reference of the strains}
 #'   \item{id}{id of each strain}
 #'   \item{vf1}{virulence factor 1 potential of the strain with id1/id2}
 #'   \item{vf2}{virulence factor 2 potential of the strain with id1/id2}
@@ -125,4 +126,71 @@
 #' @source http://www.phytools.org/eqg/Exercise_3.2/
 #'
 "Tree150"
+
+#' tree_df_25
+#'
+#' A data frame contain information about the tree
+#' created from the sample150.newick file contains taxonomy info of all strains
+#'
+#' @format data frame with 9 columns and 49 rows
+#' \describe{
+#'   \item{depth}{depth of the node}
+#'   \item{id}{ id of this node}
+#'   \item{parent}{ the parent of this point / NA if root}
+#'   \item{angle}{ angle of this point}
+#'   \item{c1}{ child 1 id / -1 if no child}
+#'   \item{c2}{ child 2 id / -1 if no child}
+#'   \item{c1_a}{ child 1 angle }
+#'   \item{c2_a}{ child 2 angle}
+#'   \item{depth_length}{ this is the parameter to calculate depth between parent and self if internal node/ length to outer radius if tips }
+#'
+#'   ...
+#' }
+#'
+#'
+"tree_df_25"
+
+#' xy_df_25
+#'
+#' A data frame contain information about the tree
+#' created from the sample150.newick file contains taxonomy info of all strains
+#'
+#' @format data frame with 11 columns and 49 rows
+#' \describe{
+#'   \item{depth}{depth of the node}
+#'   \item{id}{ id of this node}
+#'   \item{parent}{ the parent of this point / NA if root}
+#'   \item{angle}{ angle of this point}
+#'   \item{c1}{ child 1 id / -1 if no child}
+#'   \item{c2}{ child 2 id / -1 if no child}
+#'   \item{c1_a}{ child 1 angle }
+#'   \item{c2_a}{ child 2 angle}
+#'   \item{depth_length}{ this is the parameter to calculate depth between parent and self if internal node/ length to outer radius if tips }
+#'   \item{x}{ x coordinate of the point}
+#'   \item{y}{ y coordinate of the point}
+#'
+#'   ...
+#' }
+#'
+#'
+"xy_df_25"
+
+
+#' tree_layers_25
+#'
+#' A data frame contain information about the tree
+#' created from the sample150.newick file contains taxonomy info of all strains
+#'
+#' @format data frame with 3 columns and 7033 rows
+#' \describe{
+#'   \item{x}{x coordinate of the point}
+#'   \item{y}{y coordinate of the point}
+#'   \item{layer_id}{ id to show which radius the point is on}
+#'
+#'   ...
+#' }
+#'
+#'
+"tree_layers_25"
+
 

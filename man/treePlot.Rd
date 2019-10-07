@@ -12,8 +12,6 @@ treePlot(xy_data, layer_data, npoint)
 \item{layer_data}{layer data frame contaions all layers data}
 
 \item{npoint}{the number of points of each layer}
-
-\item{tip}{this flag is for detecting wjether the point is tip or internal node}
 }
 \value{
 the plot of the tree part
@@ -26,5 +24,9 @@ the nodeGroup function to adding data and add a nodeGroup each time
 by adding a layer of the ggplot
 }
 \examples{
+
+treePlot(xy_data = xy_df_25,
+         layer_data = tree_ayers_25,
+         npoint =  25)
 
 }

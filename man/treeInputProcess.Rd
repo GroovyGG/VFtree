@@ -7,7 +7,7 @@
 treeInputProcess(tree)
 }
 \arguments{
-\item{inputname}{the string of the location of the input tree}
+\item{tree}{the string of the location of the input tree}
 }
 \value{
 data frame containing all information about the input tree file
@@ -16,5 +16,7 @@ data frame containing all information about the input tree file
 \code{tree_input_process} preprocess the phylo object from the input tree file with newick format
 }
 \examples{
+treeInputProcess(Tree25)
+treeInputProcess(Tree150)
 
 }

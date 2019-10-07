@@ -7,7 +7,7 @@
 tableInputProcess(table)
 }
 \arguments{
-\item{inputname}{the string of the location of the input table/csv}
+\item{table}{the string of the location of the input table/csv}
 }
 \value{
 data frame containing all information about the input table/csv
@@ -16,5 +16,6 @@ data frame containing all information about the input table/csv
 \code{tree_input_process} preprocess the phylo object from the input tree file with newick format
 }
 \examples{
+ring_table <- tableInputProcess(Table25)
 
 }

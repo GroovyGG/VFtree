@@ -17,15 +17,22 @@
 #'
 #' \code{tree_input_process} preprocess the phylo object from the input tree file with newick format
 #'
-#' @param inputname the string of the location of the input tree
+#' @param tree the string of the location of the input tree
 #' @return data frame containing all information about the input tree file
 #'
 #' @examples
+#' treeInputProcess(Tree25)
+#' treeInputProcess(Tree150)
 #'
-#' @import ape
-#' @import igraph
-#' @import dplyr
+#' @importFrom ape read.tree
+#' @importFrom igraph graph
+#' @importFrom igraph bfs
+#' @importFrom igraph as_ids
+#' @importFrom dplyr setdiff
+#' @importFrom dplyr filter
 #' @import phytools
+#'
+#' @export
 
 treeInputProcess <- function(tree){
   # inputname = "inst/extdata/sample150.newick"
@@ -125,9 +132,13 @@ treeInputProcess <- function(tree){
 #' @return data frame of points with their x, y coordinates information that form the circle
 #'
 #' @examples
+#' c1 <- circleFun(center = c(0,0), r = 10, npoints = 100)
 #'
+#'
+#' @source
+#'  https://stackoverflow.com/questions/6862742/draw-a-circle-with-ggplot2
+#' @export
 
-# this function is modified based on source code https://stackoverflow.com/questions/6862742/draw-a-circle-with-ggplot2
 circleFun <- function(center = c(0,0), r = 10, npoints = 100){
   # seq function: generate a sequence of number with a distance of "by"
   evenly_divided <- seq(0,2*pi,length.out = npoints)
@@ -150,6 +161,7 @@ circleFun <- function(center = c(0,0), r = 10, npoints = 100){
 #' @return The total number of points of each circular shape data
 #'
 #' @examples
+#' getNPoints(ntips = 25, refine_factor = 100) # 2500
 #'
 getNPoints <- function (ntips, refine_factor = 100){
   # num_p is the number of points of each layer
@@ -177,6 +189,13 @@ getNPoints <- function (ntips, refine_factor = 100){
 #' @return num_p is the number of points of each layer
 #'
 #' @examples
+#' layer_df <- getLayers(data = tree_df_25 ,
+#'                       npoint = 25 * 40,
+#'                       ntips = 25,
+#'                       center = c(0,0),
+#'                       unit_r = 1)
+#'
+#' @export
 #'
 getLayers <- function (data, npoint, ntips, center = c(0,0), unit_r = 1) {
 
@@ -211,6 +230,12 @@ getLayers <- function (data, npoint, ntips, center = c(0,0), unit_r = 1) {
 #' @return updated tree data frame two new columns of x, y coordinates
 #'
 #' @examples
+#'
+#' xy_data <- getCoordinates(tree = tree_df_25,
+#'                layers = tree_layers_25, npoint = 25 * 40)
+#'
+#' @importFrom dplyr filter
+#' @export
 #'
 getCoordinates <- function (tree, layers, npoint) {
   max_d  <- max(layers$layer_id)
@@ -248,12 +273,22 @@ getCoordinates <- function (tree, layers, npoint) {
 #' @param idx the index of the point in tree data frame
 #' @param plot_arg pass the base plot to adding more layer on top of it
 #' @param npoint the number of points of each layer
-#' @param tip this flag is for detecting wjether the point is tip or internal node
+#' @param tip this flag is for detecting whether the point is tip or internal node
 #'
 #' @examples
 #'
+#' index <- 31
+#' base_plot <- ggplot2(aes(x,y), data = xy_df_25)
+#' nodeGroup(tree = xy_df_25 ,
+#'                  layers = tree_layers_25,
+#'                  idx = index,
+#'                  plot_arg = base_plot,
+#'                  npoint = 25,
+#'                  tip = FALSE)
+#'
 #' @import ggplot2
-#' @import dplyr
+#' @importFrom dplyr filter
+#' @export
 #'
 nodeGroup <- function(tree, layers, idx, plot_arg, npoint, tip = FALSE) {
   # Vertical line / radiate line connect its parent to itself: require depth_length column and angle
@@ -308,31 +343,36 @@ nodeGroup <- function(tree, layers, idx, plot_arg, npoint, tip = FALSE) {
 #' @param xy_data tree data frame with updated x y coordinate information
 #' @param layer_data layer data frame contaions all layers data
 #' @param npoint the number of points of each layer
-#' @param tip this flag is for detecting wjether the point is tip or internal node
 #' @return the plot of the tree part
 #'
 #' @examples
 #'
+#' treePlot(xy_data = xy_df_25,
+#'          layer_data = tree_ayers_25,
+#'          npoint =  25)
+#'
 #' @import ggplot2
-#' @import dplyr
+#' @importFrom dplyr filter
+#'
+#' @export
 #'
 treePlot <- function(xy_data, layer_data, npoint) {
-
+  np <- npoint
   root_data <- dplyr::filter(xy_data, xy_data$depth == 0)
   root <- root_data$id[1]
   # remove roots here by filtered the tree df
   no_root_data <- dplyr::filter(xy_data, xy_data$id != root)
 
   # https://felixfan.github.io/ggplot2-remove-grid-background-margin/
-  base_plot <- ggplot2::ggplot(xy_data, aes(x, y)) + ggplot2::coord_fixed(ratio = 1) +
+  base_plot <- ggplot2::ggplot(xy_data, aes(x = xy_data$x, y = xy_data$y)) + ggplot2::coord_fixed(ratio = 1) +
     theme_bw() +
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
   result_plot <- base_plot +
     ggplot2::geom_point(aes(x = 0, y = 0), colour = "blue") +
-    ggplot2::geom_point(data = no_root_data, colour = "red", size = 0.3)
+    ggplot2::geom_point(data = no_root_data, aes(x = no_root_data$x, y = no_root_data$y), colour = "red", size = 0.3)
 
   for (i in no_root_data$id){
-    result_plot <- nodeGroup(tree = no_root_data, layers = layer_data, idx = i, plot_arg = result_plot, np = npoint, tip = (i < root))
+    result_plot <- nodeGroup(tree = no_root_data, layers = layer_data, idx = i, plot_arg = result_plot, npoint = np, tip = (i < root))
   }
   return(result_plot)
 

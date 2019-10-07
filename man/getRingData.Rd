@@ -29,5 +29,12 @@ with their x, y coordinates
 \code{circleFun}
 }
 \examples{
+getRingData <- function(center_point = c(0,0),
+                       table_data = Table25,
+                       tree_depth = 4,
+                       ring_radius = 10,
+                       ring_refine_factor = 20)
+
+
 
 }

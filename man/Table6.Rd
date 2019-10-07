@@ -7,6 +7,7 @@
 \format{A data frame with 6 rows and 4 columns:
 \describe{
 \item{X}{name reference of the strains}
+\item{X.1}{name reference of the strains}
 \item{id}{id of each strain}
 \item{vf1}{virulence factor 1 potential of the strain with id1/id2}
 \item{vf2}{virulence factor 2 potential of the strain with id1/id2}

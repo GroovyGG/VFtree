@@ -3,6 +3,9 @@
 \name{circleFun}
 \alias{circleFun}
 \title{circleFun}
+\source{
+https://stackoverflow.com/questions/6862742/draw-a-circle-with-ggplot2
+}
 \usage{
 circleFun(center = c(0, 0), r = 10, npoints = 100)
 }
@@ -24,5 +27,7 @@ a circle based on the diameter/radius and angle according to x-y axis
 the built in "pi" is not exactly equal to qi due to rounding,
 }
 \examples{
+c1 <- circleFun(center = c(0,0), r = 10, npoints = 100)
+
 
 }

@@ -31,5 +31,10 @@ and use rbind to stack all data together in one data frame, mark its
 radius in an additional column named layer_id.
 }
 \examples{
+layer_df <- getLayers(data = tree_df_25 ,
+                      npoint = 25 * 40,
+                      ntips = 25,
+                      center = c(0,0),
+                      unit_r = 1)
 
 }

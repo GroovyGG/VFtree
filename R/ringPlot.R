@@ -12,10 +12,11 @@ source("R/treePlot.R")
 #'
 #' \code{tree_input_process} preprocess the phylo object from the input tree file with newick format
 #'
-#' @param inputname the string of the location of the input table/csv
+#' @param table the string of the location of the input table/csv
 #' @return data frame containing all information about the input table/csv
 #'
 #' @examples
+#' ring_table <- tableInputProcess(Table25)
 #'
 
 tableInputProcess <- function(table){
@@ -33,8 +34,12 @@ tableInputProcess <- function(table){
 #' @return data frame containing responding radius and rings
 #'
 #' @examples
+#' getRingRadius(ring_table_data = Table25,
+#'             distance_between_tree_and_ring = 1,
+#'             distance_between_ring_and_ring = 1,
+#'             tree_outer_radius = 5)
 #'
-#' @import dplyr
+#' @importFrom dplyr filter
 #'
 getRingRadius <- function(ring_table_data, distance_between_tree_and_ring = 1, distance_between_ring_and_ring = 1, tree_outer_radius) {
   list_of_factors <- colnames(ring_table_data)
@@ -68,6 +73,13 @@ getRingRadius <- function(ring_table_data, distance_between_tree_and_ring = 1, d
 #' @return data frame containing x and y coordinate of one ring with npoint index
 #'
 #' @examples
+#'getRingData <- function(center_point = c(0,0),
+#'                        table_data = Table25,
+#'                        tree_depth = 4,
+#'                        ring_radius = 10,
+#'                        ring_refine_factor = 20)
+#'
+#'
 #'
 
 getRingData <- function(center_point = c(0,0), table_data, tree_depth, ring_radius, ring_refine_factor = 20) {
@@ -93,6 +105,18 @@ getRingData <- function(center_point = c(0,0), table_data, tree_depth, ring_radi
 #' @return The ring plot based on the tree plot
 #'
 #' @examples
+#' ring_data <- getRingData <- function(center_point = c(0,0),
+#'                        table_data = Table25,
+#'                        tree_depth = 4,
+#'                        ring_radius = 10,
+#'                        ring_refine_factor = 20)
+#' ringPlot <- function(ring_table_data = Table25,
+#'                     radius_data = ring_data,
+#'                     tree_max_depth = 5,
+#'                     present_rate = 0.5,
+#'                     tree_plot = base_plot)
+#'
+#' @import ggplot2
 #'
 ringPlot <- function(ring_table_data, radius_data, tree_max_depth, present_rate = 0.5, tree_plot){
   col_factors <- colnames(ring_table_data)
@@ -101,7 +125,7 @@ ringPlot <- function(ring_table_data, radius_data, tree_max_depth, present_rate 
   for(i in col_factors[c(3:length(col_factors))]){
     temp_data = getRingData(table_data = ring_table_data, tree_depth = tree_max_depth, ring_radius = radius_data[i])
     temp_data[,i] <- ring_table_data[,i]
-    ring_plot <- ring_plot + geom_point(data = filter(temp_data,temp_data[,i] == 1),aes(colour = "red"))
+    ring_plot <- ring_plot + ggplot2::geom_point(data = filter(temp_data,temp_data[,i] == 1),aes(colour = "red"))
   }
   return(ring_plot)
 }
