@@ -4,7 +4,7 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of VFtree is to ...
+An R-package for visualization of Virulence Factors and Phylogenetic Tree of bacterial pan-genome
 
 ## Installation
 
@@ -17,12 +17,5 @@ You can install the released version of VFtree  GitHub using the following code:
 
 ```
 
-## Example
 
-This is a basic example which shows you how to solve a common problem:
-
-``` r
-library(VFtree)
-## basic example code
-```
 ![GitHub Logo](./pitch.png)
