@@ -304,7 +304,8 @@ nodeGroup <- function(tree, layers, idx, plot_arg, npoint, tip = FALSE) {
 
   # construct a df with start point and end point coordinates
   node_data <- data.frame(st_x, st_y, ep_x, ep_y)
-  plot_res <- plot_arg + ggplot2::geom_segment(aes(x = st_x, y = st_y, xend = ep_x , yend = ep_y, colour = "segment"), data = node_data)
+  plot_res <- plot_arg + ggplot2::geom_segment(ggplot2::aes(x = st_x, y = st_y, xend = ep_x , yend = ep_y, colour = "segment"), data = node_data)
+  #plot_res <- plot_arg + ggplot2::geom_segment(aes(x =st_x, y = st_y, xend = ep_x , yend = ep_y, colour = "segment"), data = node_data)
 
   # Horizontal/arc line connect two support child point require c1_a and c2_a and depth/radius
   if(tip == FALSE) {
@@ -312,7 +313,8 @@ nodeGroup <- function(tree, layers, idx, plot_arg, npoint, tip = FALSE) {
     c2_index <- target$c2_a/360 * npoint
     node_df <- dplyr::filter(layers ,layers$layer_id == target$depth)
     # plot the arc along the internal node
-    plot_res <- plot_res + ggplot2::geom_path(data = node_df[c(c1_index:c2_index),], ggplot2::aes(colour = "segment"))
+    plot_ <- ggplot2::geom_path(data = node_df[c(c1_index:c2_index),], ggplot2::aes(x, y, colour = "segment"))
+    plot_res <- plot_res + plot_
   }
 
   return(plot_res)
@@ -345,12 +347,19 @@ treePlot <- function(xy_data, layer_data, npoint) {
   no_root_data <- dplyr::filter(xy_data, xy_data$id != root)
 
   # https://felixfan.github.io/ggplot2-remove-grid-background-margin/
-  base_plot <- ggplot2::ggplot(xy_data, aes(x = xy_data$x, y = xy_data$y)) + ggplot2::coord_fixed(ratio = 1) +
-    theme_bw() +
-    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+  # base_plot <- ggplot2::ggplot(xy_data, aes(x = xy_data$x, y = xy_data$y)) + ggplot2::coord_fixed(ratio = 1) +
+  base_plot <- ggplot2::ggplot(xy_data, ggplot2::aes(xy_data$x, xy_data$y)) +
+               ggplot2::coord_fixed(ratio = 1) +
+               ggplot2::theme_bw() +
+               ggplot2::theme(panel.grid.major = ggplot2::element_blank(), panel.grid.minor = ggplot2::element_blank())
+
   result_plot <- base_plot +
-    ggplot2::geom_point(aes(x = 0, y = 0), colour = "blue") +
-    ggplot2::geom_point(data = no_root_data, aes(x = no_root_data$x, y = no_root_data$y), colour = "red", size = 0.3)
+                 ggplot2::geom_point(ggplot2::aes(x = 0, y = 0), colour = "blue") +
+                 ggplot2::geom_point(data = no_root_data,
+                                     ggplot2::aes(no_root_data$x, no_root_data$y),
+                                     colour = "red",
+                                     size = 0.3)
+    # ggplot2::geom_point(data = no_root_data, aes(no_root_data$x, no_root_data$y), colour = "red", size = 0.3)
 
   for (i in no_root_data$id){
     result_plot <- nodeGroup(tree = no_root_data, layers = layer_data, idx = i, plot_arg = result_plot, npoint = np, tip = (i < root))

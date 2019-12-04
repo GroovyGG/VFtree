@@ -39,6 +39,7 @@ source("R/ringPlot.R")
 
 combinedPlotting <- function(inputCSV, inputTree, inputNum) {
 
+  # Check input file exist
   tree_refine_f = 40
 
   tree_df <- treeInputProcess(tree = inputTree)
@@ -53,11 +54,16 @@ combinedPlotting <- function(inputCSV, inputTree, inputNum) {
   ring_table <- inputCSV
   # table_for_ring <- tableInputProcess(inputCSV)
   max_d_of_tree <- max(tree_df$depth)
-  table_ring_radius <- getRingRadius(ring_table_data = ring_table, tree_outer_radius = max_d_of_tree)
+  table_ring_radius <- getRingRadius(ring_table_data = ring_table,
+                                     tree_outer_radius = max_d_of_tree)
   table_length <- nrow(ring_table)
   ring_plot <- NULL
-  r_data <- structure(as.vector(table_ring_radius$ring_radius), names=as.vector(table_ring_radius$factor))
-  ring_plot <- ringPlot(ring_table_data = ring_table, radius_data = r_data, tree_max_depth = max_d_of_tree, tree_plot = final_tree_plot )
+  r_data <- structure(as.vector(table_ring_radius$ring_radius),
+                      names=as.vector(table_ring_radius$factor))
+  ring_plot <- ringPlot(ring_table_data = ring_table,
+                        radius_data = r_data,
+                        tree_max_depth = max_d_of_tree,
+                        tree_plot = final_tree_plot )
 
   return(ring_plot)
 
@@ -72,6 +78,7 @@ combinedPlotting <- function(inputCSV, inputTree, inputNum) {
 # plot25 <- NULL
 # plot100 <- NULL
 # plot150 <- NULL
+
 # plot25 <- combinedPlotting(Table25, Tree25, inputNum = 25)
 # plot100 <- combinedPlotting(Table100, Tree100, inputNum = 100)
 # plot150 <- combinedPlotting(Table150, Tree150, inputNum = 150)
