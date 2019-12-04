@@ -1,0 +1,13 @@
+citHeader("To cite VFtree in publications use:")
+
+citEntry(
+  entry    = "Unpublished",
+  title    = "VFtree",
+  author   = "Bihan Zhu <bihan.zhu@mail.utoronto.ca>",
+  note     = "Unpublished",
+  year     = "2019",
+  url      = "https://github.com/Norisama/VFtree",
+  textVersion = paste(
+
+  )
+)

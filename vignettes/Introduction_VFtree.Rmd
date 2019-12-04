@@ -1,0 +1,63 @@
+---
+title: "Introduction to `VFtree`"
+author: "Bihan Zhu"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Overview
+
+
+## Liscencing 
+
+## Getting Help
+Create an issue on github https://github.com/...
+
+## Input
+
+
+```{r eval=FALSE}
+
+browseVignettes()
+```
+
+## Getting started with `VFtree` 
+
+### Sample data loading 
+
+```{r eval=FALSE}
+data("Table100")
+data("Tree100")
+
+```
+
+### Create plot wiht `combinedPlot()`
+
+
+```{r echo=TRUE}
+
+```
+
+
+```{r setup}
+library(VFtree)
+```
+
+
+## Shiny app
+
+`VFtree` is also supported as a shiny app.
+
+Find it online at link or execute `runVFtreeApp.R()` in the console. Please note however, the app is much more limited in functionality than the full `pointszr` package.  
+
