@@ -91,15 +91,20 @@ getRingData <- function(center_point = c(0,0), table_data, tree_depth, ring_radi
 #'
 #'
 #' @import ggplot2
+#' @import dplyr
 #'
 ringPlot <- function(ring_table_data, radius_data, tree_max_depth, present_rate = 0.5, tree_plot){
   col_factors <- colnames(ring_table_data)
   ring_table_data[,c(3:ncol(ring_table_data))] <- floor(ring_table_data[,c(3:ncol(ring_table_data))] + present_rate)
   ring_plot <- tree_plot
   for(i in col_factors[c(3:length(col_factors))]){
-    temp_data = getRingData(table_data = ring_table_data, tree_depth = tree_max_depth, ring_radius = radius_data[i])
+    temp_data = getRingData(table_data = ring_table_data,
+                            tree_depth = tree_max_depth,
+                            ring_radius = radius_data[i])
+
     temp_data[,i] <- ring_table_data[,i]
-    ring_plot <- ring_plot + ggplot2::geom_point(data = filter(temp_data,temp_data[,i] == 1),aes(colour = "red"))
+    ring_plot <- ring_plot + ggplot2::geom_point(data = dplyr::filter(temp_data,temp_data[,i] == 1),
+                                                 ggplot2::aes(x,y,colour = "red"))
   }
   return(ring_plot)
 }
