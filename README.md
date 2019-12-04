@@ -4,20 +4,13 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
+## Description
+
+
 An R-package for visualization of Virulence Factors and Phylogenetic Tree of bacterial pan-genome
-=======
->>>>>>> backup
-Description
 
 The goal of VFtree is to build a phylogenetic Tree based on the tree data and the present/absent sheet of the gene/factors to plot a circular prepresentation of the matched information. This package provide a pan-genome approach to easily illustrate the data among strains at the species level.
 
-<<<<<<< HEAD
-=======
->>>>>>> update readme
->>>>>>> backup
 
 ## Installation
 
