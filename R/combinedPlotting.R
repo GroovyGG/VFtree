@@ -40,6 +40,9 @@ source("R/ringPlot.R")
 combinedPlotting <- function(inputCSV, inputTree, inputNum) {
 
   # Check input file exist
+
+
+
   tree_refine_f = 40
 
   tree_df <- treeInputProcess(tree = inputTree)
@@ -87,9 +90,3 @@ combinedPlotting <- function(inputCSV, inputTree, inputNum) {
 # plot100
 # plot150
 
-# inputNum <- 25
-# tree_refine_f <- 40
-# tree_df_25 <- treeInputProcess(Tree25)
-# p_25 <- getNPoints(ntips = inputNum, refine_factor = tree_refine_f)
-# tree_layers_25 <- getLayers(data = tree_df_25, npoint = p_25, ntips = inputNum)
-# xy_df_25 <- getCoordinates(tree = tree_df_25, layers = tree_layers_25, npoint = p_25)
