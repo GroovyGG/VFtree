@@ -40,6 +40,9 @@ runVFtree()
 
 ## Overview
 
+
+![GitHub Logo](./inst/extdata/image/pitch.png)
+
 ``` r
 browseVignettes("VFtree")
 ```
@@ -79,6 +82,4 @@ The functions CircularFunc was found on stackoverflow: https://stackoverflow.com
 
 ## References
 
-
-![GitHub Logo](./inst/extdata/image/pitch.png)
-
+Silva, A. TestingPackage https://github.com/anjalisilva/TestingPackage
