@@ -14,14 +14,22 @@ The goal of VFtree is to build a phylogenetic Tree based on the tree data and th
 
 ## Installation
 
+
+VFtree is currently being hosted on GitHub at https://github.com/Norisama/VFtree
+The most up-to-date version of VFtree can be easily installed directly within R, using the devtools package.
 You can install the released version of VFtree  GitHub using the following code:
 
-``` r
- library(devtools)
- install github("<user name>/<package name>")
- library(<package name>)
 
+```r
+# install devtools, if necessary:
+install.packages("devtools", dep=TRUE)
+library(devtools)
+
+# install VFtree from github:
+install_github("Norisama/VFtree", build_vignettes = TRUE, force=TRUE)
+library(VFtree)
 ```
+
 To run the shinyApp
 
 ``` r
