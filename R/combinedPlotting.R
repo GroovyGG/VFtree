@@ -9,7 +9,7 @@ source("R/ringPlot.R")
 
 ###############################
 
-#' combinePlotting
+#' combinePlot
 #'
 #' The main plotting function to combine the two parts of the workflow
 #'
@@ -26,7 +26,7 @@ source("R/ringPlot.R")
 #' data of tree(newick file) and table(csv/tsv file)
 #'
 #' @examples
-#' result_plot <- combinedPlotting(inputCSV = Table25,
+#' result_plot <- combinedPlot(inputCSV = Table25,
 #'                                 inputTree = Tree25,
 #'                                 inputNum = 25)
 #'
@@ -37,7 +37,7 @@ source("R/ringPlot.R")
 #'
 #' @export
 
-combinedPlotting <- function(inputCSV, inputTree, inputNum) {
+combinedPlot <- function(inputCSV, inputTree, inputNum) {
 
   # Check input file exist
 
@@ -75,9 +75,11 @@ combinedPlotting <- function(inputCSV, inputTree, inputNum) {
 
 # ############################### sample test cases
 
-# Table25 <- read.csv ("inst/extdata/table25.csv")
-# Tree25 <- ape::read.tree("inst/extdata/sample25.newick")
+Ta25 <- read.csv ("inst/extdata/table25.csv")
+Tr25 <- ape::read.tree("inst/extdata/sample25.newick")
 
+
+(tryplot25 <- combinedPlot(Ta25, Tr25, inputNum = 25))
 # plot25 <- NULL
 # plot100 <- NULL
 # plot150 <- NULL
