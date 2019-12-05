@@ -36,21 +36,22 @@ browseVignettes("VFtree")
 
 This package contains 3 .R file composed of 11 functions to visualize the virulence factors along with the circular phylogenetic tree. THere are three plotting functions avaliable for users.
 
-combinedPlot():
+`combinedPlot()`: The main plotting function to combine the following two parts of the workflow.
 
-ringPlot():
+`ringPlot()`: This function is used to plot the rings of factoer present/absent of that specific strain mapped in the tree based on the data from the table, the same id name mapped to tree data loop the column of the ring_table_data to plot each ring aroud the tree.
 
+`treePlot()`: This function is used to inital a base tree ploting using ggplot2. This function is composed of two parts: the base tree plotting with only nodes present without any lines/paths and a loop which calling the nodeGroup function to adding data and add a nodeGroup each time by adding a layer of the ggplot.
 
-treePlot():
-
-runVFtree(): Is the function that launches the shiny app for this package.
+`runVFtree()`: Is the function that launches the shiny app for this package.
 
 Refer to package vignettes for more details. The package tree structure is provided below (this is optional).
 
 An overview of the package is ullustrated below.
 
 result plot
-![GitHub Logo](.inst/metadata/image/pitch.png)
+![GitHub Logo](.inst/extdata/image/image1.png)
+![GitHub Logo](.inst/extdata/image/image2.png)
+
 
 ## Contributions
 
