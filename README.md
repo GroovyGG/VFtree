@@ -41,6 +41,8 @@ runVFtree()
 ## Overview
 
 
+An overview of the package is ullustrated below.
+
 ![GitHub Logo](./inst/extdata/image/pitch.png)
 
 ``` r
@@ -57,9 +59,8 @@ This package contains 3 .R file composed of 11 functions to visualize the virule
 
 `runVFtree()`: Is the function that launches the shiny app for this package.
 
-Refer to package vignettes for more details. The package tree structure is provided below (this is optional).
+Refer to package vignettes for more details. 
 
-An overview of the package is ullustrated below.
 
 result plot
 ![GitHub Logo](./inst/extdata/image/image1.png)
