@@ -37,6 +37,59 @@
 #'
 "Table25"
 
+
+#' VF25_2
+#'
+#' A dataset contain 2 factors and 25 tree nodes info
+#'
+#' @format A data frame with 25 rows and 4 columns:
+#' \describe{
+#'   \item{X}{name reference of the strains}
+#'   \item{id}{id of each strain}
+#'   \item{vf1}{virulence factor 1 potential of the strain with id1/id2}
+#'   \item{vf2}{virulence factor 2 potential of the strain with id1/id2}
+#'
+#'   ...
+#' }
+#'
+"VF25_2"
+
+#' VF25_3
+#'
+#' A dataset contain 3 factors and 25 tree nodes info
+#'
+#' @format A data frame with 25 rows and 4 columns:
+#' \describe{
+#'   \item{X}{name reference of the strains}
+#'   \item{id}{id of each strain}
+#'   \item{vf1}{virulence factor 1 potential of the strain with id1/id2}
+#'   \item{vf2}{virulence factor 2 potential of the strain with id1/id2}
+#'   \item{vf3}{virulence factor 3 potential of the strain with id1/id2}
+#'
+#'   ...
+#' }
+#'
+"VF25_3"
+
+#' VF25_4
+#'
+#' A dataset contain 4 factors and 25 tree nodes info
+#'
+#' @format A data frame with 25 rows and 4 columns:
+#' \describe{
+#'   \item{X}{name reference of the strains}
+#'   \item{id}{id of each strain}
+#'   \item{vf1}{virulence factor 1 potential of the strain with id1/id2}
+#'   \item{vf2}{virulence factor 2 potential of the strain with id1/id2}
+#'   \item{vf3}{virulence factor 3 potential of the strain with id1/id2}
+#'   \item{vf4}{virulence factor 4 potential of the strain with id1/id2}
+#'
+#'   ...
+#' }
+#'
+"VF25_4"
+
+
 #' Table100
 #'
 #' A dataset contain 2 factors and 100 tree nodes info
@@ -53,6 +106,22 @@
 #'
 "Table100"
 
+#' VF100
+#'
+#' A dataset contain 2 factors and 100 tree nodes info
+#'
+#' @format A data frame with 100 rows and 4 columns:
+#' \describe{
+#'   \item{X}{name reference of the strains}
+#'   \item{id}{id of each strain}
+#'   \item{vf1}{virulence factor 1 potential of the strain with id1/id2}
+#'   \item{vf2}{virulence factor 2 potential of the strain with id1/id2}
+#'
+#'   ...
+#' }
+#'
+"VF100"
+
 #' Table150
 #'
 #' A dataset contain 2 factors and 150 tree nodes info
@@ -68,6 +137,22 @@
 #' }
 #'
 "Table150"
+
+#' VF150
+#'
+#' A dataset contain 2 factors and 150 tree nodes info
+#'
+#' @format A data frame with 150 rows and 4 columns:
+#' \describe{
+#'   \item{X}{name reference of the strains}
+#'   \item{id}{id of each strain}
+#'   \item{vf1}{virulence factor 1 potential of the strain with id1/id2}
+#'   \item{vf2}{virulence factor 2 potential of the strain with id1/id2}
+#'
+#'   ...
+#' }
+#'
+"VF150"
 
 
 #' Tree25

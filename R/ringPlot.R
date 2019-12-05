@@ -64,12 +64,10 @@ getRingRadius <- function(ring_table_data, distance_between_tree_and_ring = 1, d
 #' @param ring_refine_factor refine factor of the plotting ring
 #' @return data frame containing x and y coordinate of one ring with npoint index
 #'
-#'
-#'
 
 getRingData <- function(center_point = c(0,0), table_data, tree_depth, ring_radius, ring_refine_factor = 20) {
   table_length <- nrow(table_data)
-  ring_data_point <- circleFun(center = center_point, r = ring_radius , npoints = table_length)
+  ring_data_point <- circleFun(center = center_point, r = ring_radius , npoints = table_length )
   return(ring_data_point)
 }
 
@@ -95,16 +93,20 @@ getRingData <- function(center_point = c(0,0), table_data, tree_depth, ring_radi
 #'
 ringPlot <- function(ring_table_data, radius_data, tree_max_depth, present_rate = 0.5, tree_plot){
   col_factors <- colnames(ring_table_data)
-  ring_table_data[,c(3:ncol(ring_table_data))] <- floor(ring_table_data[,c(3:ncol(ring_table_data))] + present_rate)
+  binary_data <- ring_table_data
+  binary_data[,c(3:ncol(ring_table_data))] <- floor(ring_table_data[,c(3:ncol(ring_table_data))] + present_rate)
+  plot_data <- rbind(binary_data,binary_data[1,])
   ring_plot <- tree_plot
+
   for(i in col_factors[c(3:length(col_factors))]){
-    temp_data = getRingData(table_data = ring_table_data,
+    data_ = getRingData(table_data = plot_data,
                             tree_depth = tree_max_depth,
                             ring_radius = radius_data[i])
 
-    temp_data[,i] <- ring_table_data[,i]
-    ring_plot <- ring_plot + ggplot2::geom_point(data = dplyr::filter(temp_data,temp_data[,i] == 1),
-                                                 ggplot2::aes(x,y,colour = "red"))
+    data_[,i] <- plot_data[,i]
+    data_ <- dplyr::filter(data_,data_[,i] == 1)
+    ring_plot <- ring_plot + ggplot2::geom_point(data = dplyr::filter(data_,data_[,i] == 1),
+                                                 ggplot2::aes(x,y,colour = "VFs"))
   }
   return(ring_plot)
 }

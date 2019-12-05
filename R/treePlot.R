@@ -44,9 +44,20 @@ treeInputProcess <- function(tree){
   num_tips = tree$Nnode + 1 # number of tips tree$Node + 1
   num_edges = nrow(tree$edge) # number of edge also nrow(tree$edge) node + tips - 1
 
-  graph1 <- igraph::graph(t(tree$edge), n = num_nodes+num_tips, directed = TRUE) # construct graph from "phylo" object tree
-  max_depth <- max(igraph::bfs(graph1,root = rt1, dist = TRUE)$dist) # find the max depth of the tree
-  bfs_result <- igraph::bfs(graph1,root = rt1, father = TRUE, dist = TRUE) # find depth and parent using bfs
+  # construct graph from "phylo" object tree
+  graph1 <- igraph::graph(t(tree$edge),
+                          n = num_nodes+num_tips,
+                          directed = TRUE)
+
+  # find the max depth of the tree
+  max_depth <- max(igraph::bfs(graph1,root = rt1,
+                               dist = TRUE)$dist)
+
+  # find depth and parent using bfs
+  bfs_result <- igraph::bfs(graph1,root = rt1,
+                            father = TRUE,
+                            dist = TRUE)
+
   depth <- bfs_result$dist
   parent <- igraph::as_ids(bfs_result$father)
   # Construct the data frame of nodes
@@ -58,6 +69,7 @@ treeInputProcess <- function(tree){
   df$angle <- -1
   next_list <- c()
   cur_list <-leaves
+
   while(length(cur_list) > 1) {
     next_list <- c()
     for( i in cur_list){
@@ -304,7 +316,13 @@ nodeGroup <- function(tree, layers, idx, plot_arg, npoint, tip = FALSE) {
 
   # construct a df with start point and end point coordinates
   node_data <- data.frame(st_x, st_y, ep_x, ep_y)
-  plot_res <- plot_arg + ggplot2::geom_segment(ggplot2::aes(x = st_x, y = st_y, xend = ep_x , yend = ep_y, colour = "segment"), data = node_data)
+  plot_res <- plot_arg + ggplot2::geom_segment(ggplot2::aes(x = st_x,
+                                                            y = st_y,
+                                                            xend = ep_x ,
+                                                            yend = ep_y,
+                                                            ),
+                                               data = node_data)
+
   #plot_res <- plot_arg + ggplot2::geom_segment(aes(x =st_x, y = st_y, xend = ep_x , yend = ep_y, colour = "segment"), data = node_data)
 
   # Horizontal/arc line connect two support child point require c1_a and c2_a and depth/radius
@@ -313,7 +331,8 @@ nodeGroup <- function(tree, layers, idx, plot_arg, npoint, tip = FALSE) {
     c2_index <- target$c2_a/360 * npoint
     node_df <- dplyr::filter(layers ,layers$layer_id == target$depth)
     # plot the arc along the internal node
-    plot_ <- ggplot2::geom_path(data = node_df[c(c1_index:c2_index),], ggplot2::aes(x, y, colour = "segment"))
+    plot_ <- ggplot2::geom_path(data = node_df[c(c1_index:c2_index),],
+                                ggplot2::aes(x, y))
     plot_res <- plot_res + plot_
   }
 
@@ -348,21 +367,30 @@ treePlot <- function(xy_data, layer_data, npoint) {
 
   # https://felixfan.github.io/ggplot2-remove-grid-background-margin/
   # base_plot <- ggplot2::ggplot(xy_data, aes(x = xy_data$x, y = xy_data$y)) + ggplot2::coord_fixed(ratio = 1) +
-  base_plot <- ggplot2::ggplot(xy_data, ggplot2::aes(xy_data$x, xy_data$y)) +
+  base_plot <- ggplot2::ggplot(xy_data, ggplot2::aes(x, y)) +
                ggplot2::coord_fixed(ratio = 1) +
-               ggplot2::theme_bw() +
-               ggplot2::theme(panel.grid.major = ggplot2::element_blank(), panel.grid.minor = ggplot2::element_blank())
+               ggplot2::theme_bw()
 
   result_plot <- base_plot +
                  ggplot2::geom_point(ggplot2::aes(x = 0, y = 0), colour = "blue") +
                  ggplot2::geom_point(data = no_root_data,
-                                     ggplot2::aes(no_root_data$x, no_root_data$y),
+                                     ggplot2::aes(x, y),
                                      colour = "red",
-                                     size = 0.3)
+                                     size = 0.3) +
+                ggplot2::theme(axis.title.x=element_blank(),
+                               axis.text.x=element_blank(),
+                               axis.ticks.x=element_blank(),
+                               axis.title.y=element_blank(),
+                               axis.text.y=element_blank(),
+                               axis.ticks.y=element_blank())
+
     # ggplot2::geom_point(data = no_root_data, aes(no_root_data$x, no_root_data$y), colour = "red", size = 0.3)
 
   for (i in no_root_data$id){
-    result_plot <- nodeGroup(tree = no_root_data, layers = layer_data, idx = i, plot_arg = result_plot, npoint = np, tip = (i < root))
+    result_plot <- nodeGroup(tree = no_root_data,
+                             layers = layer_data, idx = i,
+                             plot_arg = result_plot,
+                             npoint = np, tip = (i < root))
   }
   return(result_plot)
 
