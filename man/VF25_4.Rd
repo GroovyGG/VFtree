@@ -11,6 +11,7 @@
 \item{vf1}{virulence factor 1 potential of the strain with id1/id2}
 \item{vf2}{virulence factor 2 potential of the strain with id1/id2}
 \item{vf3}{virulence factor 3 potential of the strain with id1/id2}
+\item{vf4}{virulence factor 4 potential of the strain with id1/id2}
 
 ...
 }}

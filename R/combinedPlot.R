@@ -79,7 +79,6 @@ combinedPlot <- function(inputTable, inputTree, inputNum) {
     stop("The labels from two files are not matching")
   }
 
-
   tree_refine_f = 40
 
   tree_df <- treeInputProcess(tree = inputTree)
@@ -114,13 +113,12 @@ combinedPlot <- function(inputTable, inputTree, inputNum) {
   table_ring_radius <- getRingRadius(ring_table_data = inputTable,
                                      tree_outer_radius = max_d_of_tree)
   table_length <- nrow(inputTable)
-  message("Getting the ring radius")
 
+  message("Getting the ring radius")
   r_data <- structure(as.vector(table_ring_radius$ring_radius),
                       names=as.vector(table_ring_radius$factor))
 
   ring_plot <- NULL
-
   ring_plot <- ringPlot(ring_table_data = inputTable,
                         radius_data = r_data,
                         tree_max_depth = max_d_of_tree,
@@ -132,7 +130,6 @@ combinedPlot <- function(inputTable, inputTree, inputNum) {
                                           panel.border = ggplot2::element_blank())
 
   message("Plotting the CombinedPlot")
-
   return(ring_plot)
 
 }
@@ -140,20 +137,5 @@ combinedPlot <- function(inputTable, inputTree, inputNum) {
 
 # ############################### sample test cases
 
-
-# (tryplot150 <- combinedPlot(Ta150, Tree150, inputNum = 150))
-
-# (tryplot25 <- combinedPlot(Ta25, Tr25, inputNum = 25))
-# plot25 <- NULL
-# plot100 <- NULL
-# plot150 <- NULL
-
-# (thisplot25 <- combinedPlot(VF25_3, Tree25, inputNum = 25))
-
-# plot100 <- combinedPlotting(Table100, Tree100, inputNum = 100)
-# plot150 <- combinedPlotting(Table150, Tree150, inputNum = 150)
-
-# plot25
-# plot100
-# plot150
-
+# sampleTreePlot150 <- combinedPlot(VF150, Tree150, inputNum = 150)
+# sampleTreePlot25 <- combinedPlot(VF25_2, Tree25, inputNum = 25)

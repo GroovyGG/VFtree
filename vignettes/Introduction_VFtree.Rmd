@@ -1,7 +1,7 @@
 ---
 title: "Introduction to `VFtree`"
 author: "Bihan Zhu"
-date: "`r Sys.Date()`"
+date: "`r format(Sys.time(), '%d %b %Y')`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
@@ -18,46 +18,135 @@ knitr::opts_chunk$set(
 
 ## Overview
 
+VFtree is an R-package for visualization of Virulence Factors and Phylogenetic Tree of bacterial pan-genome.The goal of VFtree is to build a phylogenetic Tree based on the tree data and the presence/absence sheet of the gene/factors to plot a circular prepresentation of the matched information. This package provide a pan-genome approach to easily illustrate the data among strains at the species level.
 
-## Liscencing 
 
 ## Getting Help
-Create an issue on github https://github.com/...
+Create an issue on github https://github.com/Norisama/VFtree/issues
 
-## Input
+## Installation
 
+VFtree is currently being hosted on GitHub at https://github.com/Norisama/VFtree
+The most up-to-date version of VFtree can be easily installed directly within R, using the devtools package.
 
-```{r eval=FALSE}
+```{r, eval=FALSE}
+# install devtools, if necessary:
+install.packages("devtools", dep=TRUE)
+library(devtools)
 
-browseVignettes()
-```
-
-## Getting started with `VFtree` 
-
-### Sample data loading 
-
-```{r eval=FALSE}
-data("Table100")
-data("Tree100")
-
-```
-
-### Create plot wiht `combinedPlot()`
-
-
-```{r echo=TRUE}
-
-```
-
-
-```{r setup}
+# install VFtree from github:
+install_github("Norisama/VFtree", build_vignettes = TRUE, force=TRUE)
 library(VFtree)
 ```
 
 
+```{r, echo=FALSE, include=FALSE}
+library(VFtree, quietly = TRUE, verbose=FALSE)
+```
+
+To open the vignette from within R, run browseVignettes and click on the HTML hyperlink:
+
+```{r, eval=FALSE}
+browseVignettes("VFtree")
+```
+
+## Getting started with `VFtree` 
+
+VFtree generally works as a stand along package, the only package that closely works with VFtree is *ggplot2*, please see the `ggplot2` package vignette:
+
+```{r, eval=FALSE}
+> library(ggplot2)
+> browseVignettes("ggplot2")
+```
+
+
+Here we will go over the functions and arguments used within the VFtree package. We will use a simple example dataset available within VFtree to illustrate the code involved. 
+
+
+### Require Data
+
+To generate a circular tree + ring plot using VFtree, the following data is required:
+
+> A phylogenetic tree
+>   : An newick file contains the information of the phylogenetic tree. Tip labels are required and must correspond to both the row labels of the VF presence/absence data matrix and the names of the phenotypic variable.
+  
+  
+> An Pathogenecity Potentialtable Table (VFtable)
+>   : A csv file that have the same number of strains as the input phylogenetic tree, the row named *id* should contain the same names as the `tip.labels` of above tree.
+
+
+### Example Data
+
+We will use the data stored within *VFtree* as an examples throughout this section of the vignette. 
+We load the data using the `data` function and examine its structure below:
+
+```{r eval=FALSE}
+data("VF100")
+data("Tree100")
+
+```
+
+### Create plot with `combinedPlot()`
+
+```{r, highlight=TRUE}
+## Load example data:
+data(VF25_2)
+data(Tree25)
+```
+
+
+```{r, eval=FALSE}
+## Plot tree showing phenotype:
+sampleTreePlot <- combinedPlot(VF25_2, Tree25, inputNum = 25)
+```
+
+
+```{r fig.width=6, fig.height=6, fig.align = "left", echo=FALSE}
+library(png)
+library(grid)
+img <- readPNG("vignettes_images/image1.png")
+grid.raster(img)
+```
+
+
+```{r, highlight=TRUE}
+## Load example data:
+data(VF150)
+data(Tree150)
+```
+
+
+```{r, eval=FALSE}
+## Plot tree showing phenotype:
+sampleTreePlot <- combinedPlot(VF150, Tree150, inputNum = 150)
+```
+
+
+```{r fig.width=6, fig.height=6, fig.align = "left", echo=FALSE}
+library(png)
+library(grid)
+img <- readPNG("vignettes_images/image2.png")
+grid.raster(img)
+```
+
 ## Shiny app
 
-`VFtree` is also supported as a shiny app.
+`VFtree` is also supported as a shiny app. Find it online at link or execute `runVFtreeApp()` in the console.
 
-Find it online at link or execute `runVFtreeApp.R()` in the console. Please note however, the app is much more limited in functionality than the full `pointszr` package.  
+```{r, eval=FALSE}
+runVFtreeApp()
+```
 
+## Liscencing 
+
+`VFtree` is liscenced under the MIT liscence. If you use `VFtree` published research, please cite:
+
+Zhu, B (2019). VFtree. R. Retrieved from https://github.com/Norisama/VFtree
+
+# References
+
+Zhu, B (2019). VFtree. https://github.com/Norisama/VFtree
+
+Silva, A (2019). anjalisilva/TestingPackage https://github.com/anjalisilva/TestingPackage
+
+H. Wickham. ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New York, 2016. https://ggplot2.tidyverse.org/

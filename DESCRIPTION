@@ -16,7 +16,8 @@ Imports:
     ggplot2,
     ape,
     igraph,
-    phytools
+    phytools,
+    shiny
 Suggests: 
     devtools,
     usethis,

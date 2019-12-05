@@ -27,8 +27,10 @@ it plot the factor information according to each strain of the tree
 and plot as rings around the tree
 }
 \examples{
+\dontrun{
 result_plot <- combinedPlot(inputTable = VF25_2,
                                 inputTree = Tree25,
                                 inputNum = 25)
+}
 
 }
